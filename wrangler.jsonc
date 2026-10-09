@@ -1,7 +1,7 @@
 /**
  * Cloudflare Worker config — two environments, one per long-lived branch:
- *   top level  -> production, deployed from `main`  (Worker "my-app")
- *   env.dev    -> dev,        deployed from `dev`   (Worker "my-app-dev")
+ *   top level  -> production, deployed from `main`  (Worker "kemkem")
+ *   env.dev    -> dev,        deployed from `dev`   (Worker "kemkem-dev")
  * PRs into `dev` upload a version of the dev Worker with a per-PR preview URL,
  * so previews use the dev D1/KV — never production data.
  *
@@ -11,12 +11,12 @@
  * Local dev (`npm run dev`) and tests run on Miniflare and ignore the IDs.
  *
  * R2 is not used yet. To add it, enable R2 on the Cloudflare account, then add
- * `"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "my-app-files" }]` here
- * and `my-app-files-dev` under env.dev — cf-resources.mjs creates the buckets.
+ * `"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "kemkem-files" }]` here
+ * and `kemkem-files-dev` under env.dev — cf-resources.mjs creates the buckets.
  */
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "my-app",
+  "name": "kemkem",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -31,7 +31,7 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "my-app-db",
+      "database_name": "kemkem-db",
       "database_id": "00000000-0000-0000-0000-000000000000",
       "migrations_dir": "migrations",
     },
@@ -45,7 +45,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "my-app-db-dev",
+          "database_name": "kemkem-db-dev",
           "database_id": "00000000-0000-0000-0000-000000000000",
           "migrations_dir": "migrations",
         },
