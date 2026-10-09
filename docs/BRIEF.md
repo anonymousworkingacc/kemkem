@@ -157,7 +157,8 @@ và các cặp chữ dễ nhầm.
 ### 5.3 Câu thoại
 
 Danh sách đầy đủ nằm trong `src/components/kid/letter-hunt/phrases.json` (3 câu nhắc, 12
-câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu nhắc được
+câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu thoại dùng chung không được nhắc tới "chữ" hay
+"số" để hợp với mọi game. Câu nhắc được
 ghép sẵn với từng chữ của từng game (mục 3.5); các câu còn lại không phụ thuộc
 chữ cái nên dùng chung cho mọi game.
 
@@ -173,6 +174,23 @@ Luật chơi, giao diện và câu thoại giống hệt game 1, khác ở:
 - **Chữ dễ nhầm không xuất hiện cùng nhau**: các chữ chỉ khác dấu (a/ă/â,
   e/ê, o/ô/ơ, u/ư, d/đ) và b/d/đ/p/q, n/u/ư, i/l. Khi trẻ lớn hơn có thể bỏ
   bớt quy tắc này để luyện phân biệt dấu.
+
+## 5c. Game 3 — Tìm số
+
+Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine), khác ở:
+
+- **Nội dung**: các số từ 1 – 10 hoặc 1 – 20. Mỗi bàn vẫn 12 ô; với 1 – 10 các
+  số nhiễu có thể lặp lại. 6/9 và 16/19 không xuất hiện cùng nhau (dễ nhầm khi
+  ô bị nghiêng).
+- **Giọng**: vẫn giọng HoaiMy đọc cả câu — "Bạn hãy tìm số bảy." / "Số bảy." —
+  tên số đọc bằng **tiếng Việt** (một, hai… hai mươi) hoặc **tiếng Anh** phiên
+  âm kiểu Việt (oan, tu, thờ ri… tuên ti).
+- **Cài đặt trong game** (nút bánh răng trên thanh trên cùng, dành cho phụ
+  huynh): chọn "Các số" 1 – 10 / 1 – 20 và "Đọc số bằng" Tiếng Việt / Tiếng
+  Anh. Mặc định 1 – 10, tiếng Việt; lựa chọn lưu trên máy. Bấm "Chơi" để bắt
+  đầu màn mới với cài đặt đó.
+- Audio: `public/audio/numbers-vi/`, `public/audio/numbers-en/`; cấu hình ở
+  `src/features/numbers/voice.json` (danh sách 2 bộ giọng).
 
 ## 6. Ngoài phạm vi v1
 

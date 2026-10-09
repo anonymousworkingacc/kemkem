@@ -4,15 +4,15 @@
   "prompt": [
     {
       "id": "prompt-1",
-      "text": "Bạn hãy tìm chữ"
+      "text": "Bạn hãy tìm"
     },
     {
       "id": "prompt-2",
-      "text": "Bé hãy tìm giúp mình chữ"
+      "text": "Bé hãy tìm giúp mình"
     },
     {
       "id": "prompt-3",
-      "text": "Mình cùng đi tìm chữ"
+      "text": "Mình cùng đi tìm"
     }
   ],
   "correct": [
@@ -80,7 +80,7 @@
     },
     {
       "id": "wrong-4",
-      "text": "Ồ, đó là chữ khác. Bé thử lại nha!"
+      "text": "Ồ, chưa phải rồi. Bé thử lại nha!"
     },
     {
       "id": "wrong-5",
@@ -92,7 +92,7 @@
     },
     {
       "id": "wrong-7",
-      "text": "Chưa phải chữ này đâu, mình thử chữ khác nhé!"
+      "text": "Chưa phải đâu, mình thử ô khác nhé!"
     },
     {
       "id": "wrong-8",
@@ -114,7 +114,7 @@
     },
     {
       "id": "complete-4",
-      "text": "Bé là nhà thám hiểm chữ cái tài ba!"
+      "text": "Bé là nhà thám hiểm tài ba!"
     },
     {
       "id": "complete-5",

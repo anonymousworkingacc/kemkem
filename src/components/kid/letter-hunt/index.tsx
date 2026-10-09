@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { HouseIcon, PlayIcon, Volume2Icon } from "lucide-react"
+import { HouseIcon, PlayIcon, SettingsIcon, Volume2Icon } from "lucide-react"
 
 import { CELEBRATIONS } from "@/components/kid/celebration-art"
 import { FeedbackBar, type Feedback } from "@/components/kid/feedback"
@@ -19,6 +19,8 @@ export type Alphabet = {
    * ("Chữ bờ").
    */
   dir: string
+  /** What the symbols are called: "chữ" (letters) or "số" (numbers). */
+  noun: string
   /** Lower-case letters; `say` is how the Vietnamese voice names the letter. */
   letters: { id: string; char: string; say: string }[]
   /** Letters easily mistaken for the key, kept off its board (both cases). */
@@ -41,6 +43,7 @@ const REACTION_CLIPS = [phrases.correct, phrases.wrong, phrases.complete]
 
 function setup(alphabet: Alphabet) {
   const byChar = new Map(alphabet.letters.map((l) => [l.char, l]))
+  const Noun = alphabet.noun[0].toUpperCase() + alphabet.noun.slice(1)
   const clip = (file: string, text: string): Clip => ({
     src: `/${alphabet.dir}/${file}.mp3`,
     text,
@@ -48,15 +51,19 @@ function setup(alphabet: Alphabet) {
   })
   const promptClip = (prompt: Phrase, char: string) => {
     const letter = byChar.get(char)!
-    return clip(`${prompt.id}-${letter.id}`, `${prompt.text} ${letter.say}`)
+    return clip(
+      `${prompt.id}-${letter.id}`,
+      `${prompt.text} ${alphabet.noun} ${letter.say}`
+    )
   }
-  /** "Chữ bờ", said for the tile just tapped (either case). */
+  /** "Chữ bờ" / "Số bảy", said for the tile just tapped (either case). */
   const letterClip = (glyph: string) => {
     const letter = byChar.get(glyph.toLowerCase())!
-    return clip(`letter-${letter.id}`, `Chữ ${letter.say}`)
+    return clip(`letter-${letter.id}`, `${Noun} ${letter.say}`)
   }
   return {
     letters: alphabet.letters.map((l) => l.char),
+    Noun,
     promptClip,
     letterClip,
   }
@@ -78,9 +85,6 @@ type Round = {
   cells: Cell[]
 }
 
-const promptText = (round: Round) =>
-  `${round.prompt.text} ${round.target.toUpperCase()}`
-
 /**
  * "Find the letter" game, shared by every alphabet: a board of tilted letter
  * tiles, a spoken prompt, ✓/✗ feedback with the spoken sentence, and a
@@ -89,9 +93,16 @@ const promptText = (round: Round) =>
 export function LetterHunt({
   alphabet,
   onExit,
-}: GameProps & { alphabet: Alphabet }) {
+  onSettings,
+}: GameProps & {
+  alphabet: Alphabet
+  /** Shows a settings button in the game header (e.g. number range). */
+  onSettings?: () => void
+}) {
   const [game] = useState(() => setup(alphabet))
-  const { promptClip, letterClip } = game
+  const { promptClip, letterClip, Noun } = game
+  const promptText = (round: Round) =>
+    `${round.prompt.text} ${alphabet.noun} ${round.target.toUpperCase()}`
   const newRound = (bag: string[], last: string | null): Round => {
     const next = drawTarget(game.letters, bag, last)
     return {
@@ -133,7 +144,7 @@ export function LetterHunt({
     const named = letterClip(cell.char)
     const say = (phrase: Phrase) => play(named, vi(phrase))
     const show = (kind: Feedback["kind"], phrase: Phrase) =>
-      setFeedback({ kind, text: `Chữ ${cell.char}. ${phrase.text}` })
+      setFeedback({ kind, text: `${Noun} ${cell.char}. ${phrase.text}` })
     if (!cell.target) {
       const phrase = pick(phrases.wrong)
       show("wrong", phrase)
@@ -195,6 +206,13 @@ export function LetterHunt({
     <div className="flex h-full flex-col gap-[2vmin] p-[2vmin]">
       <header className="flex h-[clamp(3.5rem,11vmin,6rem)] shrink-0 items-stretch gap-[2vmin]">
         <IconButton icon={HouseIcon} label="Về trang chủ" onClick={onExit} />
+        {onSettings && (
+          <IconButton
+            icon={SettingsIcon}
+            label="Cài đặt"
+            onClick={onSettings}
+          />
+        )}
         <FeedbackBar feedback={feedback} />
         <IconButton
           icon={Volume2Icon}
@@ -205,7 +223,7 @@ export function LetterHunt({
       </header>
 
       <div
-        aria-label="Các chữ cần tìm"
+        aria-label={`Các ${alphabet.noun} cần tìm`}
         className="flex h-[clamp(2.5rem,7vmin,4rem)] shrink-0 justify-center gap-[2vmin]"
       >
         {targets.map((c) => (

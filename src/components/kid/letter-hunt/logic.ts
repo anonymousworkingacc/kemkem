@@ -31,9 +31,9 @@ export function drawTarget(
 }
 
 /**
- * `lookalikes` maps a target to letters a 2–5 year old easily mistakes for it
- * (b/d, o/ô…). Both cases of those are kept off the board so a "wrong" tap is
- * fair.
+ * `letters` are lower case (or digits, which have no case). `lookalikes` maps
+ * a target to symbols a 2–5 year old easily mistakes for it (b/d, o/ô, 6/9…).
+ * Both cases of those are kept off the board so a "wrong" tap is fair.
  */
 export function buildBoard(
   target: string,
@@ -48,9 +48,16 @@ export function buildBoard(
   }
 
   const banned = new Set([target, ...(lookalikes[target] ?? [])])
-  const distractors = shuffle(
-    letters.filter((c) => !banned.has(c)).flatMap((c) => [c, c.toUpperCase()])
-  ).slice(0, BOARD_SIZE - count)
+  const glyphs = shuffle([
+    ...new Set(
+      letters.filter((c) => !banned.has(c)).flatMap((c) => [c, c.toUpperCase()])
+    ),
+  ])
+  // Small sets (numbers 1–10) repeat distractors to fill the board.
+  const distractors = Array.from(
+    { length: BOARD_SIZE - count },
+    (_, i) => glyphs[i % glyphs.length]
+  )
 
   const tilts = shuffle(TILTS)
   const tones = shuffle([0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5])

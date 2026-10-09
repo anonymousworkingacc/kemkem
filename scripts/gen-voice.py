@@ -5,7 +5,7 @@ Usage:  pip install edge-tts && python3 scripts/gen-voice.py [--force]
 Writes into public/<dir>/:
   - the shared phrases in src/components/kid/letter-hunt/phrases.json
     (correct-1.mp3, wrong-1.mp3, …)
-  - for every src/features/*/voice.json:
+  - for every src/features/*/voice.json (one config, or a list of them):
       prompt-<n>-<id>.mp3  each prompt read whole per letter
                            ("Bạn hãy tìm chữ bờ.")
       letter-<id>.mp3      the letter on its own, said when a tile is tapped
@@ -41,14 +41,20 @@ def jobs():
         for p in phrases[group]:
             yield phrases["dir"], p["id"], p["text"], phrases["voice"], "-5%"
     for config_path in sorted(ROOT.glob("src/features/*/voice.json")):
-        config = load(config_path)
-        voice, rate = config["voice"], config.get("rate", "+0%")
-        for letter in config["letters"]:
-            for p in phrases["prompt"]:
-                text = f"{p['text']} {letter['say']}."
-                yield config["dir"], f"{p['id']}-{letter['id']}", text, voice, rate
-            text = f"Chữ {letter['say']}."
-            yield config["dir"], f"letter-{letter['id']}", text, voice, rate
+        data = load(config_path)
+        for config in data if isinstance(data, list) else [data]:
+            yield from letter_jobs(config, phrases["prompt"])
+
+
+def letter_jobs(config, prompts):
+    voice, rate = config["voice"], config.get("rate", "+0%")
+    noun = config["noun"]  # "chữ" or "số"
+    for letter in config["letters"]:
+        for p in prompts:
+            text = f"{p['text']} {noun} {letter['say']}."
+            yield config["dir"], f"{p['id']}-{letter['id']}", text, voice, rate
+        text = f"{noun.capitalize()} {letter['say']}."
+        yield config["dir"], f"letter-{letter['id']}", text, voice, rate
 
 
 async def main(force: bool) -> None:
