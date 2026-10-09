@@ -1,137 +1,153 @@
 {
-  "dir": "audio/alphabet",
-  "voice": "en-US-JennyNeural",
-  "rate": "-20%",
+  "dir": "audio/vietnamese",
+  "voice": "vi-VN-HoaiMyNeural",
+  "rate": "-5%",
+  "fullPrompt": true,
   "letters": [
     {
       "id": "a",
       "char": "a",
-      "say": "A"
+      "say": "a"
+    },
+    {
+      "id": "aw",
+      "char": "ă",
+      "say": "á"
+    },
+    {
+      "id": "aa",
+      "char": "â",
+      "say": "ớ"
     },
     {
       "id": "b",
       "char": "b",
-      "say": "B"
+      "say": "bờ"
     },
     {
       "id": "c",
       "char": "c",
-      "say": "C"
+      "say": "cờ"
     },
     {
       "id": "d",
       "char": "d",
-      "say": "D"
+      "say": "dờ"
+    },
+    {
+      "id": "dd",
+      "char": "đ",
+      "say": "đờ"
     },
     {
       "id": "e",
       "char": "e",
-      "say": "E"
+      "say": "e"
     },
     {
-      "id": "f",
-      "char": "f",
-      "say": "F"
+      "id": "ee",
+      "char": "ê",
+      "say": "ê"
     },
     {
       "id": "g",
       "char": "g",
-      "say": "G"
+      "say": "gờ"
     },
     {
       "id": "h",
       "char": "h",
-      "say": "H"
+      "say": "hờ"
     },
     {
       "id": "i",
       "char": "i",
-      "say": "I"
-    },
-    {
-      "id": "j",
-      "char": "j",
-      "say": "J"
+      "say": "i"
     },
     {
       "id": "k",
       "char": "k",
-      "say": "K"
+      "say": "ca"
     },
     {
       "id": "l",
       "char": "l",
-      "say": "L"
+      "say": "lờ"
     },
     {
       "id": "m",
       "char": "m",
-      "say": "M"
+      "say": "mờ"
     },
     {
       "id": "n",
       "char": "n",
-      "say": "N"
+      "say": "nờ"
     },
     {
       "id": "o",
       "char": "o",
-      "say": "O"
+      "say": "o"
+    },
+    {
+      "id": "oo",
+      "char": "ô",
+      "say": "ô"
+    },
+    {
+      "id": "ow",
+      "char": "ơ",
+      "say": "ơ"
     },
     {
       "id": "p",
       "char": "p",
-      "say": "P"
+      "say": "pờ"
     },
     {
       "id": "q",
       "char": "q",
-      "say": "Q"
+      "say": "cu"
     },
     {
       "id": "r",
       "char": "r",
-      "say": "R"
+      "say": "rờ"
     },
     {
       "id": "s",
       "char": "s",
-      "say": "S"
+      "say": "sờ"
     },
     {
       "id": "t",
       "char": "t",
-      "say": "T"
+      "say": "tờ"
     },
     {
       "id": "u",
       "char": "u",
-      "say": "U"
+      "say": "u"
+    },
+    {
+      "id": "uw",
+      "char": "ư",
+      "say": "ư"
     },
     {
       "id": "v",
       "char": "v",
-      "say": "V"
-    },
-    {
-      "id": "w",
-      "char": "w",
-      "say": "W"
+      "say": "vờ"
     },
     {
       "id": "x",
       "char": "x",
-      "say": "X"
+      "say": "xờ"
     },
     {
       "id": "y",
       "char": "y",
-      "say": "Y"
-    },
-    {
-      "id": "z",
-      "char": "z",
-      "say": "Z"
+      "say": "i dài"
     }
   ]
 }

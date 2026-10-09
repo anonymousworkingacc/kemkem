@@ -76,13 +76,19 @@ cái tiếng Anh.
 
 ### 3.5 Âm thanh
 
-- Mọi lời nhắc/khen/động viên đều có giọng nói tiếng Việt; **tên chữ cái đọc
-  theo tiếng Anh** (A = "ây").
+- Mọi lời nhắc/khen/động viên đều có giọng nói tiếng Việt. Tên chữ cái đọc
+  theo ngôn ngữ của game: game tiếng Anh đọc tiếng Anh (A = "ây"), game tiếng
+  Việt đọc theo cách dạy ở mầm non ("a", "á", "ớ", "bờ", "cờ"…).
 - **Giọng nói được tạo sẵn thành file mp3** (TTS neural: `vi-VN-HoaiMyNeural`
   cho tiếng Việt, `en-US-JennyNeural` cho tên chữ) bằng
-  `scripts/gen-voice.py`, đọc nội dung từ `src/features/<game>/voice.json`.
-  Câu nhắc ghép 2 clip: "Bạn hãy tìm chữ" + "A".
-- Thêm/sửa câu thoại: sửa `voice.json`, chạy lại script (chỉ tạo file còn
+  `scripts/gen-voice.py`. Câu dùng chung nằm ở
+  `src/components/kid/letter-hunt/phrases.json`, bộ chữ của từng game ở
+  `src/features/<game>/voice.json`.
+  - Game tiếng Anh: câu nhắc ghép 2 clip, "Bạn hãy tìm chữ" + "A".
+  - Game tiếng Việt (`"fullPrompt": true`): mỗi câu nhắc được tạo nguyên câu
+    cho từng chữ ("Bạn hãy tìm chữ bờ"), vì TTS đọc âm tiết đơn lẻ tiếng
+    Việt kém tự nhiên.
+- Thêm/sửa câu thoại: sửa file json, chạy lại script (chỉ tạo file còn
   thiếu; `--force` để tạo lại tất cả), commit cả file mp3.
 - Để chạy được trên nhiều loại máy, có 3 tầng dự phòng:
   1. Phát file mp3 (Boox và các máy Android: chạy tốt).
@@ -107,7 +113,11 @@ cái tiếng Anh.
 - Đã gỡ giao diện mẫu `notes`, `visits` của template (API mẫu phía Worker giữ
   nguyên, không ảnh hưởng app).
 
-## 5. Game 1 — Tìm chữ cái (Alphabet hunt)
+## 5. Game 1 — Chữ cái tiếng Anh (Alphabet hunt)
+
+Cả hai game tìm chữ dùng chung một component
+(`src/components/kid/letter-hunt/`); mỗi game chỉ khai báo bộ chữ, cách đọc
+và các cặp chữ dễ nhầm.
 
 ### 5.1 Luồng chơi
 
@@ -142,10 +152,23 @@ cái tiếng Anh.
 
 ### 5.3 Câu thoại
 
-Danh sách đầy đủ nằm trong `src/features/alphabet/voice.json` (3 câu nhắc, 12
+Danh sách đầy đủ nằm trong `src/components/kid/letter-hunt/phrases.json` (3 câu nhắc, 12
 câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu nhắc là phần
 tiếng Việt + tên chữ tiếng Anh; các câu còn lại không phụ thuộc chữ cái nên
 dùng chung cho mọi màn.
+
+## 5b. Game 2 — Chữ cái tiếng Việt
+
+Luật chơi, giao diện và câu thoại giống hệt game 1, khác ở:
+
+- **Bộ chữ**: 29 chữ cái tiếng Việt — a ă â b c d đ e ê g h i k l m n o ô ơ p
+  q r s t u ư v x y — cả hoa và thường (`Ă`/`ă` đều đúng).
+- **Cách đọc** (theo mầm non): a, á (ă), ớ (â), bờ, cờ, dờ, đờ, e, ê, gờ, hờ,
+  i, ca (k), lờ, mờ, nờ, o, ô, ơ, pờ, cu (q), rờ, sờ, tờ, u, ư, vờ, xờ,
+  i dài (y).
+- **Chữ dễ nhầm không xuất hiện cùng nhau**: các chữ chỉ khác dấu (a/ă/â,
+  e/ê, o/ô/ơ, u/ư, d/đ) và b/d/đ/p/q, n/u/ư, i/l. Khi trẻ lớn hơn có thể bỏ
+  bớt quy tắc này để luyện phân biệt dấu.
 
 ## 6. Ngoài phạm vi v1
 
