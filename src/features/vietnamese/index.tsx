@@ -16,7 +16,6 @@ export const meta: GameMeta = {
 // (a/ă/â, o/ô/ơ…) never share a board with each other, nor b/d/đ/p/q.
 const alphabet: Alphabet = {
   ...voice,
-  lang: "vi-VN",
   lookalikes: {
     a: ["ă", "â"],
     ă: ["a", "â"],

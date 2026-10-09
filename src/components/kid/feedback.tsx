@@ -31,7 +31,7 @@ export function FeedbackBar({ feedback }: { feedback: Feedback }) {
           strokeWidth={feedback.kind === "prompt" ? 2.5 : 4}
         />
       </span>
-      <p className="line-clamp-2 text-[clamp(1rem,3.6vmin,2rem)] leading-tight font-bold">
+      <p className="line-clamp-3 text-[clamp(0.85rem,3.2vmin,1.9rem)] leading-tight font-bold">
         {feedback.text}
       </p>
     </div>

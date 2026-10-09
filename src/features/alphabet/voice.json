@@ -1,137 +1,137 @@
 {
   "dir": "audio/alphabet",
-  "voice": "en-US-JennyNeural",
-  "rate": "-20%",
+  "voice": "vi-VN-HoaiMyNeural",
+  "rate": "-5%",
   "letters": [
     {
       "id": "a",
       "char": "a",
-      "say": "A"
+      "say": "ây"
     },
     {
       "id": "b",
       "char": "b",
-      "say": "B"
+      "say": "bi"
     },
     {
       "id": "c",
       "char": "c",
-      "say": "C"
+      "say": "xi"
     },
     {
       "id": "d",
       "char": "d",
-      "say": "D"
+      "say": "đi"
     },
     {
       "id": "e",
       "char": "e",
-      "say": "E"
+      "say": "i"
     },
     {
       "id": "f",
       "char": "f",
-      "say": "F"
+      "say": "ép"
     },
     {
       "id": "g",
       "char": "g",
-      "say": "G"
+      "say": "gi"
     },
     {
       "id": "h",
       "char": "h",
-      "say": "H"
+      "say": "ếch"
     },
     {
       "id": "i",
       "char": "i",
-      "say": "I"
+      "say": "ai"
     },
     {
       "id": "j",
       "char": "j",
-      "say": "J"
+      "say": "giây"
     },
     {
       "id": "k",
       "char": "k",
-      "say": "K"
+      "say": "cây"
     },
     {
       "id": "l",
       "char": "l",
-      "say": "L"
+      "say": "eo"
     },
     {
       "id": "m",
       "char": "m",
-      "say": "M"
+      "say": "em"
     },
     {
       "id": "n",
       "char": "n",
-      "say": "N"
+      "say": "en"
     },
     {
       "id": "o",
       "char": "o",
-      "say": "O"
+      "say": "âu"
     },
     {
       "id": "p",
       "char": "p",
-      "say": "P"
+      "say": "pi"
     },
     {
       "id": "q",
       "char": "q",
-      "say": "Q"
+      "say": "kiu"
     },
     {
       "id": "r",
       "char": "r",
-      "say": "R"
+      "say": "a"
     },
     {
       "id": "s",
       "char": "s",
-      "say": "S"
+      "say": "ét"
     },
     {
       "id": "t",
       "char": "t",
-      "say": "T"
+      "say": "ti"
     },
     {
       "id": "u",
       "char": "u",
-      "say": "U"
+      "say": "diu"
     },
     {
       "id": "v",
       "char": "v",
-      "say": "V"
+      "say": "vi"
     },
     {
       "id": "w",
       "char": "w",
-      "say": "W"
+      "say": "đắp bờ liu"
     },
     {
       "id": "x",
       "char": "x",
-      "say": "X"
+      "say": "ích"
     },
     {
       "id": "y",
       "char": "y",
-      "say": "Y"
+      "say": "oai"
     },
     {
       "id": "z",
       "char": "z",
-      "say": "Z"
+      "say": "dét"
     }
   ]
 }

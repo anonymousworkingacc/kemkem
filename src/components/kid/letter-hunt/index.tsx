@@ -13,15 +13,13 @@ import "./letter-hunt.css"
 
 /** One game's letters, as stored in `src/features/<game>/voice.json`. */
 export type Alphabet = {
-  /** Folder under /public with this game's clips (scripts/gen-voice.py). */
-  dir: string
-  lang: Clip["lang"]
   /**
-   * true: each prompt is recorded whole per letter (`prompt-<n>-<id>.mp3`).
-   * false: the shared prompt is followed by `letter-<id>.mp3`.
+   * Folder under /public with this game's clips (scripts/gen-voice.py):
+   * `prompt-<n>-<id>.mp3` ("Bạn hãy tìm chữ bờ") and `letter-<id>.mp3`
+   * ("Chữ bờ").
    */
-  fullPrompt?: boolean
-  /** Lower-case letters; `say` is how the voice names the letter. */
+  dir: string
+  /** Lower-case letters; `say` is how the Vietnamese voice names the letter. */
   letters: { id: string; char: string; say: string }[]
   /** Letters easily mistaken for the key, kept off its board (both cases). */
   lookalikes: Record<string, string[]>
@@ -35,35 +33,33 @@ const vi = (p: Phrase): Clip => ({
   lang: "vi-VN",
 })
 
-// Prompt clips are fetched when played; only the shared reactions are
-// preloaded so the first tap answers without delay.
+// Prompt and letter clips are fetched when played; only the shared reactions
+// are preloaded so the first tap answers without delay.
 const REACTION_CLIPS = [phrases.correct, phrases.wrong, phrases.complete]
   .flat()
   .map((p) => vi(p).src)
 
 function setup(alphabet: Alphabet) {
   const byChar = new Map(alphabet.letters.map((l) => [l.char, l]))
-  const promptClips = (prompt: Phrase, char: string): Clip[] => {
+  const clip = (file: string, text: string): Clip => ({
+    src: `/${alphabet.dir}/${file}.mp3`,
+    text,
+    lang: "vi-VN",
+  })
+  const promptClip = (prompt: Phrase, char: string) => {
     const letter = byChar.get(char)!
-    if (alphabet.fullPrompt) {
-      return [
-        {
-          src: `/${alphabet.dir}/${prompt.id}-${letter.id}.mp3`,
-          text: `${prompt.text} ${letter.say}`,
-          lang: alphabet.lang,
-        },
-      ]
-    }
-    return [
-      vi(prompt),
-      {
-        src: `/${alphabet.dir}/letter-${letter.id}.mp3`,
-        text: letter.say,
-        lang: alphabet.lang,
-      },
-    ]
+    return clip(`${prompt.id}-${letter.id}`, `${prompt.text} ${letter.say}`)
   }
-  return { letters: alphabet.letters.map((l) => l.char), promptClips }
+  /** "Chữ bờ", said for the tile just tapped (either case). */
+  const letterClip = (glyph: string) => {
+    const letter = byChar.get(glyph.toLowerCase())!
+    return clip(`letter-${letter.id}`, `Chữ ${letter.say}`)
+  }
+  return {
+    letters: alphabet.letters.map((l) => l.char),
+    promptClip,
+    letterClip,
+  }
 }
 
 const TILE_BG = [
@@ -95,7 +91,7 @@ export function LetterHunt({
   onExit,
 }: GameProps & { alphabet: Alphabet }) {
   const [game] = useState(() => setup(alphabet))
-  const { promptClips } = game
+  const { promptClip, letterClip } = game
   const newRound = (bag: string[], last: string | null): Round => {
     const next = drawTarget(game.letters, bag, last)
     return {
@@ -123,20 +119,25 @@ export function LetterHunt({
   // back to back, so this runs once per round, not on every tap).
   const { prompt, target } = round
   useEffect(() => {
-    play(...promptClips(prompt, target))
-  }, [prompt, target, promptClips])
+    play(promptClip(prompt, target))
+  }, [prompt, target, promptClip])
 
   const repeatPrompt = () => {
     setFeedback({ kind: "prompt", text: promptText(round) })
-    play(...promptClips(round.prompt, round.target))
+    play(promptClip(round.prompt, round.target))
   }
 
+  // Every tap first names the tapped letter ("Chữ bờ"), then reacts.
   const tap = (cell: Cell) => {
     if (cell.found) return
+    const named = letterClip(cell.char)
+    const say = (phrase: Phrase) => play(named, vi(phrase))
+    const show = (kind: Feedback["kind"], phrase: Phrase) =>
+      setFeedback({ kind, text: `Chữ ${cell.char}. ${phrase.text}` })
     if (!cell.target) {
       const phrase = pick(phrases.wrong)
-      setFeedback({ kind: "wrong", text: phrase.text })
-      play(vi(phrase))
+      show("wrong", phrase)
+      say(phrase)
       return
     }
     const cells = round.cells.map((c) =>
@@ -146,11 +147,11 @@ export function LetterHunt({
     if (cells.every((c) => !c.target || c.found)) {
       const phrase = pick(phrases.complete)
       setWin({ Art: pick(CELEBRATIONS), phrase })
-      play(vi(phrase))
+      say(phrase)
     } else {
       const phrase = pick(phrases.correct)
-      setFeedback({ kind: "correct", text: phrase.text })
-      play(vi(phrase))
+      show("correct", phrase)
+      say(phrase)
     }
   }
 

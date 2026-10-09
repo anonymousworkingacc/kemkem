@@ -76,18 +76,19 @@ cái tiếng Anh.
 
 ### 3.5 Âm thanh
 
-- Mọi lời nhắc/khen/động viên đều có giọng nói tiếng Việt. Tên chữ cái đọc
-  theo ngôn ngữ của game: game tiếng Anh đọc tiếng Anh (A = "ây"), game tiếng
-  Việt đọc theo cách dạy ở mầm non ("a", "á", "ớ", "bờ", "cờ"…).
-- **Giọng nói được tạo sẵn thành file mp3** (TTS neural: `vi-VN-HoaiMyNeural`
-  cho tiếng Việt, `en-US-JennyNeural` cho tên chữ) bằng
-  `scripts/gen-voice.py`. Câu dùng chung nằm ở
-  `src/components/kid/letter-hunt/phrases.json`, bộ chữ của từng game ở
-  `src/features/<game>/voice.json`.
-  - Game tiếng Anh: câu nhắc ghép 2 clip, "Bạn hãy tìm chữ" + "A".
-  - Game tiếng Việt (`"fullPrompt": true`): mỗi câu nhắc được tạo nguyên câu
-    cho từng chữ ("Bạn hãy tìm chữ bờ"), vì TTS đọc âm tiết đơn lẻ tiếng
-    Việt kém tự nhiên.
+- **Một giọng duy nhất cho mọi game**: giọng nữ tiếng Việt
+  (`vi-VN-HoaiMyNeural`) đọc cả câu, kể cả tên chữ. Tên chữ đọc theo game:
+  - Game tiếng Anh: tên chữ tiếng Anh phiên âm kiểu Việt — ây, bi, xi, đi, i,
+    ép, gi, ếch, ai, giây, cây, eo, em, en, âu, pi, kiu, a, ét, ti, diu, vi,
+    đắp bờ liu, ích, oai, dét.
+  - Game tiếng Việt: cách đọc ở mầm non — a, á, ớ, bờ, cờ…
+- **Giọng nói được tạo sẵn thành file mp3** (TTS neural) bằng
+  `scripts/gen-voice.py`. Câu dùng chung (khen, động viên, chúc mừng) nằm ở
+  `src/components/kid/letter-hunt/phrases.json`; bộ chữ và cách đọc của từng
+  game ở `src/features/<game>/voice.json`. Với mỗi chữ, script tạo nguyên câu
+  (không ghép âm tiết rời, nghe tự nhiên hơn):
+  - `prompt-<n>-<chữ>.mp3`: "Bạn hãy tìm chữ bờ."
+  - `letter-<chữ>.mp3`: "Chữ bờ." — đọc khi trẻ chạm vào ô chữ đó.
 - Thêm/sửa câu thoại: sửa file json, chạy lại script (chỉ tạo file còn
   thiếu; `--force` để tạo lại tất cả), commit cả file mp3.
 - Để chạy được trên nhiều loại máy, có 3 tầng dự phòng:
@@ -132,9 +133,12 @@ và các cặp chữ dễ nhầm.
    không dịch chuyển) và phát ngẫu nhiên một câu khen.
 4. **Chạm sai**: chữ không biến mất, không có hiệu ứng trên chữ; phát ngẫu
    nhiên một câu an ủi, động viên. Không trừ điểm.
+   **Mỗi lần chạm (đúng hay sai) đều đọc tên chữ vừa chạm trước** ("Chữ bờ."),
+   rồi mới đến câu khen / động viên / chúc mừng.
    **Thanh thông báo** (trên cùng, cố định chiều cao): mỗi lần chạm hiện biểu
    tượng **✓** (đúng) hoặc **✗** (sai) kèm **đúng câu vừa nói** dưới dạng chữ.
-   Lúc bắt đầu màn / bấm loa, thanh hiện câu nhắc "Bạn hãy tìm chữ A".
+   Ví dụ: "✓ Chữ a. Đúng rồi!". Lúc bắt đầu màn / bấm loa, thanh hiện câu
+   nhắc "Bạn hãy tìm chữ A".
 5. **Hết màn** (đã tìm hết các chữ mục tiêu): hiện **màn chúc mừng** — một
    hình SVG chúc mừng (chọn ngẫu nhiên trong vài mẫu) + một câu khen ngợi
    (chọn ngẫu nhiên) + nút **"Chơi tiếp"** lớn.
@@ -153,9 +157,9 @@ và các cặp chữ dễ nhầm.
 ### 5.3 Câu thoại
 
 Danh sách đầy đủ nằm trong `src/components/kid/letter-hunt/phrases.json` (3 câu nhắc, 12
-câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu nhắc là phần
-tiếng Việt + tên chữ tiếng Anh; các câu còn lại không phụ thuộc chữ cái nên
-dùng chung cho mọi màn.
+câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu nhắc được
+ghép sẵn với từng chữ của từng game (mục 3.5); các câu còn lại không phụ thuộc
+chữ cái nên dùng chung cho mọi game.
 
 ## 5b. Game 2 — Chữ cái tiếng Việt
 
@@ -163,7 +167,7 @@ Luật chơi, giao diện và câu thoại giống hệt game 1, khác ở:
 
 - **Bộ chữ**: 29 chữ cái tiếng Việt — a ă â b c d đ e ê g h i k l m n o ô ơ p
   q r s t u ư v x y — cả hoa và thường (`Ă`/`ă` đều đúng).
-- **Cách đọc** (theo mầm non): a, á (ă), ớ (â), bờ, cờ, dờ, đờ, e, ê, gờ, hờ,
+- **Cách đọc** (theo mầm non, xem mục 3.5): a, á (ă), ớ (â), bờ, cờ, dờ, đờ, e, ê, gờ, hờ,
   i, ca (k), lờ, mờ, nờ, o, ô, ơ, pờ, cu (q), rờ, sờ, tờ, u, ư, vờ, xờ,
   i dài (y).
 - **Chữ dễ nhầm không xuất hiện cùng nhau**: các chữ chỉ khác dấu (a/ă/â,
@@ -192,7 +196,7 @@ Luật chơi, giao diện và câu thoại giống hệt game 1, khác ở:
 | #   | Câu hỏi           | Quyết định                                                       |
 | --- | ----------------- | ---------------------------------------------------------------- |
 | Q1  | Nguồn giọng nói   | Tạo sẵn file audio bằng TTS neural (mục 3.5)                     |
-| Q2  | Đọc tên chữ cái   | Tiếng Anh                                                        |
+| Q2  | Đọc tên chữ cái   | Tiếng Anh, do giọng tiếng Việt đọc (phiên âm "ây, bi, xi…")      |
 | Q3  | Hoa / thường      | Cả `A` và `a` đều tính đúng                                      |
 | Q4  | Số ô, độ khó      | 12 ô, 3–4 mục tiêu, một mức độ khó; chữ nghiêng mỗi chữ một kiểu |
 | Q5  | Thiết bị          | Boox là chính; máy khác chơi được nhờ dự phòng âm thanh + chữ    |

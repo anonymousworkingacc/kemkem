@@ -2,7 +2,6 @@
   "dir": "audio/vietnamese",
   "voice": "vi-VN-HoaiMyNeural",
   "rate": "-5%",
-  "fullPrompt": true,
   "letters": [
     {
       "id": "a",

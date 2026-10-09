@@ -4,12 +4,13 @@ Usage:  pip install edge-tts && python3 scripts/gen-voice.py [--force]
 
 Writes into public/<dir>/:
   - the shared phrases in src/components/kid/letter-hunt/phrases.json
-    (prompt-1.mp3, correct-1.mp3, …)
-  - for every src/features/*/voice.json, either the letter names
-    (letter-<id>.mp3, joined to the prompt at play time), or with
-    "fullPrompt": true each prompt read whole per letter
-    (prompt-<n>-<id>.mp3: "Bạn hãy tìm chữ bờ"), which sounds more natural
-    than a lone syllable when prompt and letter share a language
+    (correct-1.mp3, wrong-1.mp3, …)
+  - for every src/features/*/voice.json:
+      prompt-<n>-<id>.mp3  each prompt read whole per letter
+                           ("Bạn hãy tìm chữ bờ.")
+      letter-<id>.mp3      the letter on its own, said when a tile is tapped
+                           ("Chữ bờ.")
+    Whole sentences sound far more natural than a lone syllable glued on.
 Existing files are skipped unless --force is given. Set SSL_CERT_FILE when
 running behind a TLS-inspecting proxy.
 """
@@ -36,31 +37,18 @@ def load(path: Path) -> dict:
 
 def jobs():
     phrases = load(PHRASES)
-    for group in ("prompt", "correct", "wrong", "complete"):
+    for group in ("correct", "wrong", "complete"):
         for p in phrases[group]:
-            # Vietnamese sentences at a calm pace.
             yield phrases["dir"], p["id"], p["text"], phrases["voice"], "-5%"
     for config_path in sorted(ROOT.glob("src/features/*/voice.json")):
         config = load(config_path)
-        if config.get("fullPrompt"):
-            for p in phrases["prompt"]:
-                for letter in config["letters"]:
-                    yield (
-                        config["dir"],
-                        f"{p['id']}-{letter['id']}",
-                        f"{p['text']} {letter['say']}.",
-                        config["voice"],
-                        config.get("rate", "+0%"),
-                    )
-            continue
+        voice, rate = config["voice"], config.get("rate", "+0%")
         for letter in config["letters"]:
-            yield (
-                config["dir"],
-                f"letter-{letter['id']}",
-                letter["say"],
-                config["voice"],
-                config.get("rate", "+0%"),
-            )
+            for p in phrases["prompt"]:
+                text = f"{p['text']} {letter['say']}."
+                yield config["dir"], f"{p['id']}-{letter['id']}", text, voice, rate
+            text = f"Chữ {letter['say']}."
+            yield config["dir"], f"letter-{letter['id']}", text, voice, rate
 
 
 async def main(force: bool) -> None:

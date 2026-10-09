@@ -11,10 +11,9 @@ export const meta: GameMeta = {
   order: 10,
 }
 
-// Letter names are read in English ("ây", "bi"…).
+// English letter names, said by the Vietnamese voice ("ây", "bi", "xi"…).
 const alphabet: Alphabet = {
   ...voice,
-  lang: "en-US",
   lookalikes: {
     b: ["d", "p", "q"],
     d: ["b", "p", "q"],
