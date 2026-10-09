@@ -82,16 +82,27 @@ function Home({
         )}
         <IconButton icon={SettingsIcon} label="Cài đặt" onClick={onSettings} />
       </header>
-      <main className="grid min-h-0 flex-1 auto-rows-fr grid-cols-1 gap-[3vmin] landscape:grid-cols-2">
-        {games.map(({ name, meta }) => (
+      <main
+        className={cn(
+          "grid min-h-0 flex-1 auto-rows-fr gap-[3vmin]",
+          games.length > 2
+            ? "grid-cols-2 landscape:grid-cols-3"
+            : "grid-cols-1 landscape:grid-cols-2"
+        )}
+      >
+        {games.map(({ name, meta }, i) => (
           <button
             key={name}
             type="button"
             onClick={() => onPlay(name)}
-            className="flex min-h-0 flex-col items-center justify-center gap-[2vmin] rounded-3xl border-[4px] border-ink bg-tile-1 p-[3vmin] active:bg-ink active:text-paper"
+            className={cn(
+              // Sized as a container so the glyph and title scale with the card.
+              "[container-type:size] flex min-h-0 flex-col items-center justify-center gap-[4cqmin] rounded-3xl border-[4px] border-ink p-[3vmin] active:bg-ink active:text-paper",
+              CARD_BG[i % CARD_BG.length]
+            )}
           >
-            <meta.icon className="text-[clamp(5rem,30vmin,16rem)]" />
-            <span className="text-[clamp(1.5rem,6vmin,3rem)] font-bold">
+            <meta.icon className="text-[36cqmin]" />
+            <span className="text-center text-[clamp(1rem,11cqmin,3rem)] leading-tight font-bold">
               {meta.title}
             </span>
           </button>
@@ -100,6 +111,8 @@ function Home({
     </div>
   )
 }
+
+const CARD_BG = ["bg-tile-1", "bg-tile-2", "bg-tile-4", "bg-tile-3"]
 
 const THEME_OPTIONS: { value: Theme; label: string; swatches: string[] }[] = [
   {

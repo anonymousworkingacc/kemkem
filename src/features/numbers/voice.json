@@ -1,0 +1,220 @@
+[
+  {
+    "id": "vi",
+    "dir": "audio/numbers-vi",
+    "noun": "số",
+    "voice": "vi-VN-HoaiMyNeural",
+    "rate": "-5%",
+    "letters": [
+      {
+        "id": "1",
+        "char": "1",
+        "say": "một"
+      },
+      {
+        "id": "2",
+        "char": "2",
+        "say": "hai"
+      },
+      {
+        "id": "3",
+        "char": "3",
+        "say": "ba"
+      },
+      {
+        "id": "4",
+        "char": "4",
+        "say": "bốn"
+      },
+      {
+        "id": "5",
+        "char": "5",
+        "say": "năm"
+      },
+      {
+        "id": "6",
+        "char": "6",
+        "say": "sáu"
+      },
+      {
+        "id": "7",
+        "char": "7",
+        "say": "bảy"
+      },
+      {
+        "id": "8",
+        "char": "8",
+        "say": "tám"
+      },
+      {
+        "id": "9",
+        "char": "9",
+        "say": "chín"
+      },
+      {
+        "id": "10",
+        "char": "10",
+        "say": "mười"
+      },
+      {
+        "id": "11",
+        "char": "11",
+        "say": "mười một"
+      },
+      {
+        "id": "12",
+        "char": "12",
+        "say": "mười hai"
+      },
+      {
+        "id": "13",
+        "char": "13",
+        "say": "mười ba"
+      },
+      {
+        "id": "14",
+        "char": "14",
+        "say": "mười bốn"
+      },
+      {
+        "id": "15",
+        "char": "15",
+        "say": "mười lăm"
+      },
+      {
+        "id": "16",
+        "char": "16",
+        "say": "mười sáu"
+      },
+      {
+        "id": "17",
+        "char": "17",
+        "say": "mười bảy"
+      },
+      {
+        "id": "18",
+        "char": "18",
+        "say": "mười tám"
+      },
+      {
+        "id": "19",
+        "char": "19",
+        "say": "mười chín"
+      },
+      {
+        "id": "20",
+        "char": "20",
+        "say": "hai mươi"
+      }
+    ]
+  },
+  {
+    "id": "en",
+    "dir": "audio/numbers-en",
+    "noun": "số",
+    "voice": "vi-VN-HoaiMyNeural",
+    "rate": "-5%",
+    "letters": [
+      {
+        "id": "1",
+        "char": "1",
+        "say": "oan"
+      },
+      {
+        "id": "2",
+        "char": "2",
+        "say": "tu"
+      },
+      {
+        "id": "3",
+        "char": "3",
+        "say": "thờ ri"
+      },
+      {
+        "id": "4",
+        "char": "4",
+        "say": "pho"
+      },
+      {
+        "id": "5",
+        "char": "5",
+        "say": "phai"
+      },
+      {
+        "id": "6",
+        "char": "6",
+        "say": "xích"
+      },
+      {
+        "id": "7",
+        "char": "7",
+        "say": "xe vần"
+      },
+      {
+        "id": "8",
+        "char": "8",
+        "say": "ết"
+      },
+      {
+        "id": "9",
+        "char": "9",
+        "say": "nai"
+      },
+      {
+        "id": "10",
+        "char": "10",
+        "say": "ten"
+      },
+      {
+        "id": "11",
+        "char": "11",
+        "say": "i le vần"
+      },
+      {
+        "id": "12",
+        "char": "12",
+        "say": "tu eo vơ"
+      },
+      {
+        "id": "13",
+        "char": "13",
+        "say": "thơ tin"
+      },
+      {
+        "id": "14",
+        "char": "14",
+        "say": "pho tin"
+      },
+      {
+        "id": "15",
+        "char": "15",
+        "say": "phíp tin"
+      },
+      {
+        "id": "16",
+        "char": "16",
+        "say": "xích tin"
+      },
+      {
+        "id": "17",
+        "char": "17",
+        "say": "xe vần tin"
+      },
+      {
+        "id": "18",
+        "char": "18",
+        "say": "ết tin"
+      },
+      {
+        "id": "19",
+        "char": "19",
+        "say": "nai tin"
+      },
+      {
+        "id": "20",
+        "char": "20",
+        "say": "tuên ti"
+      }
+    ]
+  }
+]

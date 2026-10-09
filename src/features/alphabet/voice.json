@@ -1,52 +1,138 @@
 {
   "dir": "audio/alphabet",
-  "voices": {
-    "vi": "vi-VN-HoaiMyNeural",
-    "en": "en-US-JennyNeural"
-  },
-  "prompt": [
-    { "id": "prompt-1", "text": "Bạn hãy tìm chữ" },
-    { "id": "prompt-2", "text": "Bé hãy tìm giúp mình chữ" },
-    { "id": "prompt-3", "text": "Mình cùng đi tìm chữ" }
-  ],
-  "correct": [
-    { "id": "correct-1", "text": "Đúng rồi!" },
-    { "id": "correct-2", "text": "Chính xác!" },
-    { "id": "correct-3", "text": "Giỏi quá!" },
-    { "id": "correct-4", "text": "Tuyệt vời!" },
-    { "id": "correct-5", "text": "Bé giỏi lắm!" },
-    { "id": "correct-6", "text": "Hay quá!" },
-    { "id": "correct-7", "text": "Bé siêu quá đi!" },
-    { "id": "correct-8", "text": "Làm tốt lắm!" },
-    { "id": "correct-9", "text": "Chuẩn luôn!" },
-    { "id": "correct-10", "text": "Đúng rồi, bé tinh mắt quá!" },
-    { "id": "correct-11", "text": "Xuất sắc!" },
-    { "id": "correct-12", "text": "Bé tìm giỏi ghê!" }
-  ],
-  "wrong": [
-    { "id": "wrong-1", "text": "Chưa đúng rồi, thử lại nhé!" },
-    { "id": "wrong-2", "text": "Gần đúng rồi, cố lên nào!" },
-    { "id": "wrong-3", "text": "Không sao đâu, mình tìm tiếp nhé!" },
-    { "id": "wrong-4", "text": "Ồ, đó là chữ khác. Bé thử lại nha!" },
-    { "id": "wrong-5", "text": "Cố lên, bé làm được mà!" },
-    { "id": "wrong-6", "text": "Nhìn kỹ lại nào, bé nhé!" },
+  "noun": "chữ",
+  "voice": "vi-VN-HoaiMyNeural",
+  "rate": "-5%",
+  "letters": [
     {
-      "id": "wrong-7",
-      "text": "Chưa phải chữ này đâu, mình thử chữ khác nhé!"
+      "id": "a",
+      "char": "a",
+      "say": "ây"
     },
-    { "id": "wrong-8", "text": "Sai một chút thôi, bé giỏi mà!" }
-  ],
-  "complete": [
-    { "id": "complete-1", "text": "Hoan hô! Bé đã tìm được hết rồi!" },
-    { "id": "complete-2", "text": "Tuyệt vời! Bé thật là giỏi!" },
-    { "id": "complete-3", "text": "Xuất sắc quá! Mình chơi tiếp nhé!" },
-    { "id": "complete-4", "text": "Bé là nhà thám hiểm chữ cái tài ba!" },
     {
-      "id": "complete-5",
-      "text": "Giỏi quá đi! Thưởng cho bé một tràng pháo tay!"
+      "id": "b",
+      "char": "b",
+      "say": "bi"
     },
-    { "id": "complete-6", "text": "Hoàn hảo! Bé đã tìm thấy tất cả rồi!" },
-    { "id": "complete-7", "text": "Bé giỏi nhất nhà luôn! Hoan hô!" },
-    { "id": "complete-8", "text": "Wow! Bé tìm nhanh quá, siêu ghê!" }
+    {
+      "id": "c",
+      "char": "c",
+      "say": "xi"
+    },
+    {
+      "id": "d",
+      "char": "d",
+      "say": "đi"
+    },
+    {
+      "id": "e",
+      "char": "e",
+      "say": "i"
+    },
+    {
+      "id": "f",
+      "char": "f",
+      "say": "ép"
+    },
+    {
+      "id": "g",
+      "char": "g",
+      "say": "gi"
+    },
+    {
+      "id": "h",
+      "char": "h",
+      "say": "ếch"
+    },
+    {
+      "id": "i",
+      "char": "i",
+      "say": "ai"
+    },
+    {
+      "id": "j",
+      "char": "j",
+      "say": "giây"
+    },
+    {
+      "id": "k",
+      "char": "k",
+      "say": "cây"
+    },
+    {
+      "id": "l",
+      "char": "l",
+      "say": "eo"
+    },
+    {
+      "id": "m",
+      "char": "m",
+      "say": "em"
+    },
+    {
+      "id": "n",
+      "char": "n",
+      "say": "en"
+    },
+    {
+      "id": "o",
+      "char": "o",
+      "say": "âu"
+    },
+    {
+      "id": "p",
+      "char": "p",
+      "say": "pi"
+    },
+    {
+      "id": "q",
+      "char": "q",
+      "say": "kiu"
+    },
+    {
+      "id": "r",
+      "char": "r",
+      "say": "a"
+    },
+    {
+      "id": "s",
+      "char": "s",
+      "say": "ét"
+    },
+    {
+      "id": "t",
+      "char": "t",
+      "say": "ti"
+    },
+    {
+      "id": "u",
+      "char": "u",
+      "say": "diu"
+    },
+    {
+      "id": "v",
+      "char": "v",
+      "say": "vi"
+    },
+    {
+      "id": "w",
+      "char": "w",
+      "say": "đắp bờ liu"
+    },
+    {
+      "id": "x",
+      "char": "x",
+      "say": "ích"
+    },
+    {
+      "id": "y",
+      "char": "y",
+      "say": "oai"
+    },
+    {
+      "id": "z",
+      "char": "z",
+      "say": "dét"
+    }
   ]
 }
