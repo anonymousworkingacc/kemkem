@@ -1,8 +1,6 @@
 {
   "dir": "audio/vietnamese",
   "noun": "chữ",
-  "voice": "vi-VN-HoaiMyNeural",
-  "rate": "-5%",
   "letters": [
     {
       "id": "a",

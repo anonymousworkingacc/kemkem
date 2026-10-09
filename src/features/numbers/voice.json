@@ -3,8 +3,6 @@
     "id": "vi",
     "dir": "audio/numbers-vi",
     "noun": "số",
-    "voice": "vi-VN-HoaiMyNeural",
-    "rate": "-5%",
     "letters": [
       {
         "id": "1",
@@ -112,8 +110,6 @@
     "id": "en",
     "dir": "audio/numbers-en",
     "noun": "số",
-    "voice": "vi-VN-HoaiMyNeural",
-    "rate": "-5%",
     "letters": [
       {
         "id": "1",

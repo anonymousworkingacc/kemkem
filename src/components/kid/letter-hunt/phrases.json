@@ -1,6 +1,5 @@
 {
   "dir": "audio/phrases",
-  "voice": "vi-VN-HoaiMyNeural",
   "prompt": [
     {
       "id": "prompt-1",

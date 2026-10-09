@@ -76,14 +76,15 @@ cái tiếng Anh.
 
 ### 3.5 Âm thanh
 
-- **Một giọng duy nhất cho mọi game**: giọng nữ tiếng Việt
-  (`vi-VN-HoaiMyNeural`) đọc cả câu, kể cả tên chữ. Tên chữ đọc theo game:
+- **Một giọng duy nhất cho mọi game**: giọng nữ **miền Bắc** (preset "Ngọc Huyền" của
+  [VieNeu-TTS](https://github.com/pnnbao97/VieNeu-TTS), giấy phép Apache-2.0,
+  dùng thương mại được) đọc cả câu, kể cả tên chữ. Tên chữ đọc theo game:
   - Game tiếng Anh: tên chữ tiếng Anh phiên âm kiểu Việt — ây, bi, xi, đi, i,
     ép, gi, ếch, ai, giây, cây, eo, em, en, âu, pi, kiu, a, ét, ti, diu, vi,
     đắp bờ liu, ích, oai, dét.
   - Game tiếng Việt: cách đọc ở mầm non — a, á, ớ, bờ, cờ…
-- **Giọng nói được tạo sẵn thành file mp3** (TTS neural) bằng
-  `scripts/gen-voice.py`. Câu dùng chung (khen, động viên, chúc mừng) nằm ở
+- **Giọng nói được tạo sẵn thành file mp3** (VieNeu-TTS v3 Turbo, chạy CPU,
+  ~3 giây/câu) bằng `scripts/gen-voice.py`. Câu dùng chung (khen, động viên, chúc mừng) nằm ở
   `src/components/kid/letter-hunt/phrases.json`; bộ chữ và cách đọc của từng
   game ở `src/features/<game>/voice.json`. Với mỗi chữ, script tạo nguyên câu
   (không ghép âm tiết rời, nghe tự nhiên hơn):
@@ -182,7 +183,7 @@ Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine
 - **Nội dung**: các số từ 1 – 10 hoặc 1 – 20. Mỗi bàn vẫn 12 ô; với 1 – 10 các
   số nhiễu có thể lặp lại. 6/9 và 16/19 không xuất hiện cùng nhau (dễ nhầm khi
   ô bị nghiêng).
-- **Giọng**: vẫn giọng HoaiMy đọc cả câu — "Bạn hãy tìm số bảy." / "Số bảy." —
+- **Giọng**: vẫn giọng Ngọc Huyền (miền Bắc) đọc cả câu — "Bạn hãy tìm số bảy." / "Số bảy." —
   tên số đọc bằng **tiếng Việt** (một, hai… hai mươi) hoặc **tiếng Anh** phiên
   âm kiểu Việt (oan, tu, thờ ri… tuên ti).
 - **Cài đặt trong game** (nút bánh răng trên thanh trên cùng, dành cho phụ
@@ -213,7 +214,7 @@ Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine
 
 | #   | Câu hỏi           | Quyết định                                                       |
 | --- | ----------------- | ---------------------------------------------------------------- |
-| Q1  | Nguồn giọng nói   | Tạo sẵn file audio bằng TTS neural (mục 3.5)                     |
+| Q1  | Nguồn giọng nói   | Tạo sẵn file audio bằng TTS, giọng nữ miền Bắc (mục 3.5)         |
 | Q2  | Đọc tên chữ cái   | Tiếng Anh, do giọng tiếng Việt đọc (phiên âm "ây, bi, xi…")      |
 | Q3  | Hoa / thường      | Cả `A` và `a` đều tính đúng                                      |
 | Q4  | Số ô, độ khó      | 12 ô, 3–4 mục tiêu, một mức độ khó; chữ nghiêng mỗi chữ một kiểu |

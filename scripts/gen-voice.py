@@ -1,6 +1,14 @@
-"""Generate the games' voice clips with Microsoft Edge neural TTS.
+"""Generate the games' voice clips with VieNeu-TTS (Northern Vietnamese voice).
 
-Usage:  pip install edge-tts && python3 scripts/gen-voice.py [--force]
+Usage (CPU is enough, ~3 s per clip):
+    python3 -m venv .venv-tts && .venv-tts/bin/pip install vieneu
+    .venv-tts/bin/python scripts/gen-voice.py [--force]
+Needs ffmpeg on PATH. If onnxruntime fails with "External data path escapes
+model directory", pin it: .venv-tts/bin/pip install onnxruntime==1.22.1
+
+VieNeu-TTS v3 Turbo (Apache-2.0, https://github.com/pnnbao97/VieNeu-TTS) with
+the preset "Ngọc Huyền": female, Northern (Hà Nội) accent. One voice for every
+clip in every game.
 
 Writes into public/<dir>/:
   - the shared phrases in src/components/kid/letter-hunt/phrases.json
@@ -11,24 +19,18 @@ Writes into public/<dir>/:
       letter-<id>.mp3      the letter on its own, said when a tile is tapped
                            ("Chữ bờ.")
     Whole sentences sound far more natural than a lone syllable glued on.
-Existing files are skipped unless --force is given. Set SSL_CERT_FILE when
-running behind a TLS-inspecting proxy.
+Existing files are skipped unless --force is given.
 """
 
-import asyncio
 import json
-import os
-import ssl
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
-
-import edge_tts.communicate as tts
 
 ROOT = Path(__file__).resolve().parent.parent
 PHRASES = ROOT / "src/components/kid/letter-hunt/phrases.json"
-
-if os.environ.get("SSL_CERT_FILE"):
-    tts._SSL_CTX = ssl.create_default_context(cafile=os.environ["SSL_CERT_FILE"])
+VOICE = "Ngọc Huyền"
 
 
 def load(path: Path) -> dict:
@@ -39,7 +41,7 @@ def jobs():
     phrases = load(PHRASES)
     for group in ("correct", "wrong", "complete"):
         for p in phrases[group]:
-            yield phrases["dir"], p["id"], p["text"], phrases["voice"], "-5%"
+            yield phrases["dir"], p["id"], p["text"]
     for config_path in sorted(ROOT.glob("src/features/*/voice.json")):
         data = load(config_path)
         for config in data if isinstance(data, list) else [data]:
@@ -47,25 +49,38 @@ def jobs():
 
 
 def letter_jobs(config, prompts):
-    voice, rate = config["voice"], config.get("rate", "+0%")
     noun = config["noun"]  # "chữ" or "số"
     for letter in config["letters"]:
         for p in prompts:
             text = f"{p['text']} {noun} {letter['say']}."
-            yield config["dir"], f"{p['id']}-{letter['id']}", text, voice, rate
-        text = f"{noun.capitalize()} {letter['say']}."
-        yield config["dir"], f"letter-{letter['id']}", text, voice, rate
+            yield config["dir"], f"{p['id']}-{letter['id']}", text
+        yield config["dir"], f"letter-{letter['id']}", f"{noun.capitalize()} {letter['say']}."
 
 
-async def main(force: bool) -> None:
-    for out_dir, clip_id, text, voice, rate in jobs():
-        out = ROOT / "public" / out_dir / f"{clip_id}.mp3"
-        if out.exists() and not force:
-            continue
-        out.parent.mkdir(parents=True, exist_ok=True)
-        await tts.Communicate(text, voice, rate=rate).save(str(out))
-        print(f"{out.relative_to(ROOT)}  <- {text!r} ({voice})")
+def main(force: bool) -> None:
+    todo = [
+        (ROOT / "public" / out_dir / f"{clip_id}.mp3", text)
+        for out_dir, clip_id, text in jobs()
+    ]
+    todo = [(out, text) for out, text in todo if force or not out.exists()]
+    if not todo:
+        return
+    from vieneu import Vieneu  # slow import, only when there is work
+
+    tts = Vieneu()
+    with tempfile.TemporaryDirectory() as tmp:
+        wav = Path(tmp) / "clip.wav"
+        for out, text in todo:
+            out.parent.mkdir(parents=True, exist_ok=True)
+            tts.save(tts.infer(text, voice=VOICE), str(wav))
+            # Small mono mp3s: e-readers download them on the fly.
+            subprocess.run(
+                ["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-ac", "1",
+                 "-ar", "24000", "-b:a", "48k", str(out)],
+                check=True,
+            )
+            print(f"{out.relative_to(ROOT)}  <- {text!r}", flush=True)
 
 
 if __name__ == "__main__":
-    asyncio.run(main("--force" in sys.argv))
+    main("--force" in sys.argv)
