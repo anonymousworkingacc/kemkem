@@ -6,6 +6,9 @@ enabled yet). Two long-lived branches = two environments: `dev` (Worker
 `<app>-dev`) and `main` (production). Code reaches `dev` through a reviewed
 feature PR and `main` only through a release PR `dev → main` (see "Workflow").
 
+Product brief (what the app is, e-ink constraints, game rules):
+[docs/BRIEF.md](docs/BRIEF.md) — read it before building UI.
+
 ## Commands
 
 ```bash
