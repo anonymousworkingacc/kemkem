@@ -21,13 +21,16 @@ npm run db:new <name>  # new timestamped D1 migration in migrations/
 npm run db:migrate:local
 npm run cf-typegen     # regenerate worker-configuration.d.ts after editing wrangler.jsonc
 npm run rename -- <name>   # rename the app (Worker, D1 names, title); new projects only
+python3 scripts/gen-voice.py   # generate missing voice mp3s from src/features/*/voice.json (pip install edge-tts)
 ```
 
 ## Layout
 
 ```
 src/                     React client
-  features/<name>/index.tsx   one folder per feature, auto-mounted by App.tsx
+  features/<game>/index.tsx   one folder per game, listed on the home screen by App.tsx
+  components/kid/        shared kid-sized UI (icon button, ✓/✗ feedback bar, SVG art)
+  lib/game.ts            game contract (meta + { onExit }), lib/sound.ts voice playback
   components/ui/         shadcn/ui components (Base UI flavour) — edit freely
   lib/api.ts             fetch helpers for /api
 worker/                  Hono API (only /api/* reaches the Worker)
@@ -44,8 +47,14 @@ wrangler.jsonc           production at top level, `env.dev` for dev + PR preview
 
 - **New feature = new folders**: `src/features/<name>/` and
   `worker/features/<name>/`. Both are discovered with `import.meta.glob`, so do
-  not add hand-written registries/route lists. Export `order` from the client
-  feature to control its position.
+  not add hand-written registries/route lists. A client feature is a game: it
+  exports `meta: GameMeta` (title, icon, `order`) and a default component
+  taking `{ onExit }` (see `src/lib/game.ts`).
+- **E-ink rules** (docs/BRIEF.md §3): every screen fits the viewport with no
+  scroll or zoom (size with `vmin`/`clamp`, never fixed px that can overflow);
+  no animations/transitions/hover; colours only via the theme tokens
+  (`ink`, `paper`, `tile-*`, `art-*`, `ok`, `no`, `accent`) so both `bw` and
+  `color` themes work; vector/icons only; every spoken line also shown as text.
 - Avoid editing shared hot files (`App.tsx`, `worker/app.ts`, `index.css`,
   `shared/types.ts`) unless the change is genuinely cross-cutting; prefer
   adding a new file.

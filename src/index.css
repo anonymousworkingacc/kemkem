@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "./styles/shadcn.css";
 
+/* No dark mode: `.dark` is never set, so shadcn's `dark:` styles stay off
+   even when the device prefers a dark colour scheme. */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -23,19 +25,22 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-tile-1: var(--tile-1);
+  --color-tile-2: var(--tile-2);
+  --color-tile-3: var(--tile-3);
+  --color-tile-4: var(--tile-4);
+  --color-tile-5: var(--tile-5);
+  --color-tile-6: var(--tile-6);
+  --color-art-1: var(--art-1);
+  --color-art-2: var(--art-2);
+  --color-art-3: var(--art-3);
+  --color-art-4: var(--art-4);
+  --color-ok: var(--ok);
+  --color-no: var(--no);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: "Andika", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -43,80 +48,106 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+/*
+ * Two themes for e-ink readers, picked in Settings (no dark mode):
+ *   bw    — black & white e-ink (default): only black, white and solid greys.
+ *   color — colour e-ink (Kaleido): few, saturated, flat colours.
+ * Everything (text, tiles, icons, SVG art) reads these variables, so switching
+ * `data-theme` on <html> re-themes the whole app, illustrations included.
+ */
+:root,
+:root[data-theme="bw"] {
+  --radius: 1rem;
+  --ink: #000;
+  --paper: #fff;
+  --tile-1: #fff;
+  --tile-2: #fff;
+  --tile-3: #fff;
+  --tile-4: #fff;
+  --tile-5: #fff;
+  --tile-6: #fff;
+  --art-1: #fff;
+  --art-2: #d0d0d0;
+  --art-3: #8a8a8a;
+  --art-4: #000;
+  --ok: #fff;
+  --no: #fff;
+  --accent: #000;
+  --accent-ink: #fff;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+:root[data-theme="color"] {
+  --tile-1: #ffd23f;
+  --tile-2: #7cc8ff;
+  --tile-3: #ff9a8b;
+  --tile-4: #8fe388;
+  --tile-5: #ffb35c;
+  --tile-6: #c9a7ff;
+  --art-1: #ffd23f;
+  --art-2: #ff6b5b;
+  --art-3: #3fa7ff;
+  --art-4: #3cc153;
+  --ok: #3cc153;
+  --no: #ff6b5b;
+  --accent: #1f6fff;
+  --accent-ink: #fff;
+}
+
+/* shadcn/ui tokens, mapped onto the e-ink palette (light only). */
+:root {
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper);
+  --muted-foreground: var(--ink);
+  --accent-foreground: var(--ink);
+  --destructive: var(--ink);
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--ink);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
+  /* E-ink: one full screen, no scroll, no zoom, no selection callouts. */
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
+  html {
+    touch-action: none;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+}
+
+/*
+ * E-ink refreshes slowly: every state change must be a single instant repaint.
+ * No transitions, animations or smooth scrolling anywhere, including in
+ * shadcn/ui components.
+ */
+*,
+*::before,
+*::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
 }

@@ -1,0 +1,10 @@
+/* Letter size follows the tile, whatever the screen size or orientation. */
+.letter-tile {
+  container-type: size;
+}
+
+.letter-glyph {
+  font-size: min(15vw, 10vh); /* fallback for browsers without cq units */
+  font-size: 66cqmin;
+  line-height: 1;
+}
