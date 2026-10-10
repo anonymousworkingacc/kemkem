@@ -96,6 +96,17 @@ def english():
 
 ENGINES = {"vi": vietnamese, "en": english}
 
+# Trim silence at both ends (keeping a 30 ms edge) so clips played back to
+# back sound like one sentence. Trúc Ly speaks quickly: slow her down a bit
+# (atempo keeps the pitch).
+TRIM = (
+    "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03,"
+    "areverse,"
+    "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03,"
+    "areverse"
+)
+FILTERS = {"vi": f"atempo=0.88,{TRIM}", "en": TRIM}
+
 
 def main(force: bool) -> None:
     todo = [
@@ -113,8 +124,8 @@ def main(force: bool) -> None:
             engines[lang](text, wav)
             # Small mono mp3s: e-readers download them on the fly.
             subprocess.run(
-                ["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-ac", "1",
-                 "-ar", "24000", "-b:a", "48k", str(out)],
+                ["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-af", FILTERS[lang],
+                 "-ac", "1", "-ar", "24000", "-b:a", "48k", str(out)],
                 check=True,
             )
             print(f"{out.relative_to(ROOT)}  <- {text!r}", flush=True)

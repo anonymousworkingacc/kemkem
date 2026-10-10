@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { HouseIcon, PlayIcon, SettingsIcon, Volume2Icon } from "lucide-react"
 
 import { CELEBRATIONS } from "@/components/kid/celebration-art"
 import { FeedbackBar, type Feedback } from "@/components/kid/feedback"
 import { IconButton } from "@/components/kid/icon-button"
 import { pick, type GameProps } from "@/lib/game"
-import { play, preload, stop, type Clip } from "@/lib/sound"
+import { enqueue, isPlaying, play, preload, stop, type Clip } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 import { buildBoard, drawTarget, type Cell } from "./logic"
 import phrasesEn from "./phrases.en.json"
@@ -73,11 +73,14 @@ function setup(alphabet: Alphabet) {
     phraseClip,
     promptClip,
     letterClip,
-    // Prompt and letter clips are fetched when played; only the reactions
-    // are preloaded so the first tap answers without delay.
-    reactionClips: [phrases.correct, phrases.wrong, phrases.complete]
-      .flat()
-      .map((p) => phraseClip(p).src),
+    // Prompt clips are fetched when played; what a tap says is preloaded so
+    // the first tap answers without delay.
+    tapClips: [
+      ...alphabet.letters.map((l) => letterClip(l.char).src),
+      ...[phrases.correct, phrases.wrong, phrases.complete]
+        .flat()
+        .map((p) => phraseClip(p).src),
+    ],
   }
 }
 
@@ -134,30 +137,41 @@ export function LetterHunt({
   } | null>(null)
 
   useEffect(() => {
-    preload(game.reactionClips)
+    preload(game.tapClips)
     return stop
   }, [game])
 
   // Ask for the letter at the start of every round (targets never repeat
   // back to back, so this runs once per round, not on every tap).
   const { prompt, target } = round
+  // Letter whose name + reaction is being said, so tapping the same letter
+  // again (or another copy of it) does not restart the sentence.
+  const saying = useRef<string | null>(null)
   useEffect(() => {
+    saying.current = null
     play(promptClip(prompt, target))
   }, [prompt, target, promptClip])
 
   const repeatPrompt = () => {
     setFeedback({ kind: "prompt", text: promptText(round) })
+    saying.current = null
     play(promptClip(round.prompt, round.target))
   }
 
   // Every tap first names the tapped letter ("Chữ bờ"), then reacts.
   const tap = (cell: Cell) => {
     if (cell.found) return
+    const key = cell.char.toLowerCase()
+    const repeat = saying.current === key && isPlaying()
+    saying.current = key
     const named = letterClip(cell.char)
     const say = (phrase: Phrase) => play(named, phraseClip(phrase))
     const show = (kind: Feedback["kind"], phrase: Phrase) =>
       setFeedback({ kind, text: `${Noun} ${cell.char}. ${phrase.text}` })
-    if (!cell.target) {
+    if (repeat) {
+      // Same letter while its sentence is still playing: let it finish.
+      if (!cell.target) return
+    } else if (!cell.target) {
       const phrase = pick(phrases.wrong)
       show("wrong", phrase)
       say(phrase)
@@ -170,8 +184,9 @@ export function LetterHunt({
     if (cells.every((c) => !c.target || c.found)) {
       const phrase = pick(phrases.complete)
       setWin({ Art: pick(CELEBRATIONS), phrase })
-      say(phrase)
-    } else {
+      if (repeat) enqueue(phraseClip(phrase))
+      else say(phrase)
+    } else if (!repeat) {
       const phrase = pick(phrases.correct)
       show("correct", phrase)
       say(phrase)

@@ -98,14 +98,20 @@ cái tiếng Anh.
 - Mô hình tiếng Việt mỗi lần đọc ra một kiểu hơi khác nhau: các câu khen /
   động viên được tạo nhiều lần và giữ bản rõ nhất; câu quá ngắn được viết
   dài hơn một chút ("Bé giỏi quá đi!" thay vì "Giỏi quá!").
+- Giọng Trúc Ly được làm chậm lại (×0,88, giữ cao độ); mọi file được cắt
+  khoảng lặng ở hai đầu để các đoạn ghép ("Chữ bờ." + "Đúng rồi!") nghe
+  liền một câu.
 - Thêm/sửa câu thoại: sửa file json, chạy lại script (chỉ tạo file còn
   thiếu; `--force` để tạo lại tất cả), commit cả file mp3.
 - Để chạy được trên nhiều loại máy, có 3 tầng dự phòng:
-  1. Phát file mp3 (Boox và các máy Android: chạy tốt).
+  1. Phát file mp3 bằng Web Audio: giải mã sẵn, xếp các đoạn nối tiếp nhau
+     không có khoảng nghỉ (Boox và các máy Android: chạy tốt).
   2. Không phát được file → đọc bằng TTS có sẵn của trình duyệt nếu có.
   3. Máy không có âm thanh (trình duyệt Kindle/Kobo) → **câu nói luôn hiện
      thành chữ** trên thanh thông báo (mục 5.1), trò chơi vẫn chơi được.
 - Lần chạm vào trò chơi ở màn chính mở khoá âm thanh (chính sách autoplay).
+- Chạm lại đúng chữ/số đang được đọc (kể cả một bản khác của nó) thì không
+  ngắt câu đang đọc; chạm chữ khác thì ngắt và đọc chữ mới.
 
 ## 4. Kiến trúc tổng thể
 
