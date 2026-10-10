@@ -1,5 +1,7 @@
 {
-  "dir": "audio/phrases",
+  "lang": "vi",
+  "dir": "audio/phrases-vi",
+  "playAgain": "Chơi tiếp",
   "prompt": [
     {
       "id": "prompt-1",

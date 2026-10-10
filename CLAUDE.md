@@ -21,7 +21,7 @@ npm run db:new <name>  # new timestamped D1 migration in migrations/
 npm run db:migrate:local
 npm run cf-typegen     # regenerate worker-configuration.d.ts after editing wrangler.jsonc
 npm run rename -- <name>   # rename the app (Worker, D1 names, title); new projects only
-python3 scripts/gen-voice.py   # generate missing voice mp3s (Northern VieNeu-TTS voice; setup in the script's docstring)
+python3 scripts/gen-voice.py   # generate missing voice mp3s (vi: VieNeu "Trúc Ly", en: Kokoro; setup in the script's docstring)
 ```
 
 ## Layout
@@ -30,7 +30,8 @@ python3 scripts/gen-voice.py   # generate missing voice mp3s (Northern VieNeu-TT
 src/                     React client
   features/<game>/index.tsx   one folder per game, listed on the home screen by App.tsx
   components/kid/        shared kid-sized UI (icon button, ✓/✗ feedback bar, SVG art)
-  components/kid/letter-hunt/  the "find the letter" game engine; games pass an alphabet
+  components/kid/letter-hunt/  the "find the letter" game engine; games pass an alphabet + language
+  components/kid/game-settings.tsx  in-game settings screen (parent-facing, Vietnamese)
   lib/game.ts            game contract (meta + { onExit }), lib/sound.ts voice playback
   components/ui/         shadcn/ui components (Base UI flavour) — edit freely
   lib/api.ts             fetch helpers for /api

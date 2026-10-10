@@ -74,22 +74,30 @@ cái tiếng Anh.
 - Hình minh hoạ (hình chúc mừng, linh vật…) vẽ bằng SVG nét đơn giản, nét
   dày, mảng đặc — hiển thị tốt cả 2 theme.
 
-### 3.5 Âm thanh
+### 3.5 Âm thanh và ngôn ngữ
 
-- **Một giọng duy nhất cho mọi game**: giọng nữ **miền Bắc** (preset "Ngọc Huyền" của
-  [VieNeu-TTS](https://github.com/pnnbao97/VieNeu-TTS), giấy phép Apache-2.0,
-  dùng thương mại được) đọc cả câu, kể cả tên chữ. Tên chữ đọc theo game:
-  - Game tiếng Anh: tên chữ tiếng Anh phiên âm kiểu Việt — ây, bi, xi, đi, i,
-    ép, gi, ếch, ai, giây, cây, eo, em, en, âu, pi, kiu, a, ét, ti, diu, vi,
-    đắp bờ liu, ích, oai, dét.
-  - Game tiếng Việt: cách đọc ở mầm non — a, á, ớ, bờ, cờ…
-- **Giọng nói được tạo sẵn thành file mp3** (VieNeu-TTS v3 Turbo, chạy CPU,
-  ~3 giây/câu) bằng `scripts/gen-voice.py`. Câu dùng chung (khen, động viên, chúc mừng) nằm ở
-  `src/components/kid/letter-hunt/phrases.json`; bộ chữ và cách đọc của từng
-  game ở `src/features/<game>/voice.json`. Với mỗi chữ, script tạo nguyên câu
-  (không ghép âm tiết rời, nghe tự nhiên hơn):
-  - `prompt-<n>-<chữ>.mp3`: "Bạn hãy tìm chữ bờ."
-  - `letter-<chữ>.mp3`: "Chữ bờ." — đọc khi trẻ chạm vào ô chữ đó.
+- Mỗi game có cài đặt **ngôn ngữ: Tiếng Việt / Tiếng Anh**. Ngôn ngữ quyết
+  định **toàn bộ** những gì trò chơi nói và hiện trong lúc chơi: câu nhắc, tên
+  chữ/số, câu khen, câu động viên, câu chúc mừng (cả lời đọc lẫn chữ trên
+  thanh thông báo). Màn cài đặt (dành cho phụ huynh) luôn bằng tiếng Việt.
+- **Tiếng Việt**: giọng nữ **miền Bắc** "Trúc Ly" của
+  [VieNeu-TTS](https://github.com/pnnbao97/VieNeu-TTS) v3 Turbo. Tên chữ đọc
+  theo cách dạy ở mầm non — a, á, ớ, bờ, cờ…; số: một, hai… hai mươi.
+- **Tiếng Anh**: giọng nữ tiếng Anh–Mỹ bản xứ "af_heart" của
+  [Kokoro-82M](https://github.com/thewh1teagle/kokoro-onnx). Ví dụ: "Find the
+  letter B." / "Letter B." / "Great job!" / "Find the number seven."
+- Cả hai bộ đọc đều giấy phép Apache-2.0 (dùng thương mại được), chạy CPU.
+- **Giọng nói được tạo sẵn thành file mp3** bằng `scripts/gen-voice.py`.
+  Câu dùng chung theo ngôn ngữ nằm ở
+  `src/components/kid/letter-hunt/phrases.vi.json` và `phrases.en.json`; bộ
+  chữ/số và cách đọc ở `src/features/<game>/voice.json` (mỗi game một danh
+  sách 2 cấu hình `vi`/`en`). Với mỗi chữ, script tạo nguyên câu (không ghép
+  âm tiết rời, nghe tự nhiên hơn):
+  - `prompt-<n>-<chữ>.mp3`: "Bạn hãy tìm chữ bờ." / "Find the letter B."
+  - `letter-<chữ>.mp3`: "Chữ bờ." / "Letter B." — đọc khi trẻ chạm vào ô đó.
+- Mô hình tiếng Việt mỗi lần đọc ra một kiểu hơi khác nhau: các câu khen /
+  động viên được tạo nhiều lần và giữ bản rõ nhất; câu quá ngắn được viết
+  dài hơn một chút ("Bé giỏi quá đi!" thay vì "Giỏi quá!").
 - Thêm/sửa câu thoại: sửa file json, chạy lại script (chỉ tạo file còn
   thiếu; `--force` để tạo lại tất cả), commit cả file mp3.
 - Để chạy được trên nhiều loại máy, có 3 tầng dự phòng:
@@ -101,7 +109,7 @@ cái tiếng Anh.
 
 ## 4. Kiến trúc tổng thể
 
-- App là một **"game hub"**: màn hình chính là lưới các trò chơi (v1 chỉ có 1),
+- App là một **"game hub"**: màn hình chính là lưới các trò chơi (hiện có 2: Tìm chữ, Tìm số),
   chạm vào để vào trò chơi. Thay layout dạng trang danh sách hiện tại của
   template.
 - Mỗi trò chơi là một thư mục `src/features/<game>/` theo quy ước của repo.
@@ -115,18 +123,21 @@ cái tiếng Anh.
 - Đã gỡ giao diện mẫu `notes`, `visits` của template (API mẫu phía Worker giữ
   nguyên, không ảnh hưởng app).
 
-## 5. Game 1 — Chữ cái tiếng Anh (Alphabet hunt)
+## 5. Game 1 — Tìm chữ
 
-Cả hai game tìm chữ dùng chung một component
-(`src/components/kid/letter-hunt/`); mỗi game chỉ khai báo bộ chữ, cách đọc
-và các cặp chữ dễ nhầm.
+Hai game dùng chung một engine (`src/components/kid/letter-hunt/`); mỗi game
+chỉ khai báo bộ ký hiệu, cách đọc, các cặp dễ nhầm và màn cài đặt
+(`src/components/kid/game-settings.tsx`, nút bánh răng trên thanh trên cùng).
+
+**Cài đặt "Bảng chữ cái"**: Tiếng Việt (mặc định) / Tiếng Anh — đồng thời là
+ngôn ngữ của cả game (mục 3.5). Lưu trên máy.
 
 ### 5.1 Luồng chơi
 
 1. **Bắt đầu màn**: chọn ngẫu nhiên một **chữ mục tiêu** (ví dụ `A`). Màn
    hình hiện một lưới các chữ cái tiếng Anh, lẫn **viết hoa và viết thường**,
    trong đó có nhiều bản của chữ mục tiêu (cả `A` và `a`) xen với các chữ khác.
-2. Giọng đọc: **"Bạn hãy tìm chữ A"** (chữ A đọc tiếng Anh). Một **nút loa**
+2. Giọng đọc: **"Bạn hãy tìm chữ A"** / **"Find the letter A"**. Một **nút loa**
    cố định trên màn hình để nghe lại câu nhắc bất kỳ lúc nào.
    Dưới thanh trên cùng là hàng ô nhỏ hiện các chữ cần tìm (nét đứt), ô được
    tô đen khi đã tìm thấy — trẻ thấy còn bao nhiêu chữ.
@@ -138,7 +149,7 @@ và các cặp chữ dễ nhầm.
    rồi mới đến câu khen / động viên / chúc mừng.
    **Thanh thông báo** (trên cùng, cố định chiều cao): mỗi lần chạm hiện biểu
    tượng **✓** (đúng) hoặc **✗** (sai) kèm **đúng câu vừa nói** dưới dạng chữ.
-   Ví dụ: "✓ Chữ a. Đúng rồi!". Lúc bắt đầu màn / bấm loa, thanh hiện câu
+   Ví dụ: "✓ Chữ a. Đúng rồi!" / "✓ Letter a. Great job!". Lúc bắt đầu màn / bấm loa, thanh hiện câu
    nhắc "Bạn hãy tìm chữ A".
 5. **Hết màn** (đã tìm hết các chữ mục tiêu): hiện **màn chúc mừng** — một
    hình SVG chúc mừng (chọn ngẫu nhiên trong vài mẫu) + một câu khen ngợi
@@ -152,46 +163,34 @@ và các cặp chữ dễ nhầm.
 | Số ô chữ trên màn           | 12 (lưới 3×4 dọc / 4×3 ngang), co theo kích thước màn hình                                     |
 | Số chữ mục tiêu mỗi màn     | 3–4, gồm ít nhất 1 hoa và 1 thường; **chạm `A` hay `a` đều đúng**                              |
 | Chữ nhiễu                   | Ngẫu nhiên, không trùng; loại chữ dễ nhầm với mục tiêu (b/d/p/q, m/w, n/u, I/l…)               |
-| Chọn chữ mục tiêu tiếp theo | Ngẫu nhiên, không lặp lại cho đến khi đã chơi đủ 26 chữ                                        |
+| Chọn chữ mục tiêu tiếp theo | Ngẫu nhiên, không lặp lại cho đến khi đã chơi hết bảng chữ (29 / 26 chữ)                       |
 | Hiển thị chữ                | Ô thẻ to, viền đậm; **mỗi chữ nghiêng một góc khác nhau** (±3°…±14°); theme Color tô màu nền ô |
 
 ### 5.3 Câu thoại
 
-Danh sách đầy đủ nằm trong `src/components/kid/letter-hunt/phrases.json` (3 câu nhắc, 12
-câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn). Câu thoại dùng chung không được nhắc tới "chữ" hay
-"số" để hợp với mọi game. Câu nhắc được
-ghép sẵn với từng chữ của từng game (mục 3.5); các câu còn lại không phụ thuộc
-chữ cái nên dùng chung cho mọi game.
+Mỗi ngôn ngữ một bộ (`phrases.vi.json`, `phrases.en.json`): 3 câu nhắc, 12
+câu khen, 8 câu động viên khi sai, 8 câu chúc mừng hết màn. Câu dùng chung
+không nhắc tới "chữ"/"số" để hợp với mọi game.
 
-## 5b. Game 2 — Chữ cái tiếng Việt
+### 5.4 Bảng chữ cái
 
-Luật chơi, giao diện và câu thoại giống hệt game 1, khác ở:
+- **Tiếng Việt**: 29 chữ — a ă â b c d đ e ê g h i k l m n o ô ơ p q r s t u ư
+  v x y. Đọc: a, á (ă), ớ (â), bờ, cờ, dờ, đờ, e, ê, gờ, hờ, i, ca (k), lờ,
+  mờ, nờ, o, ô, ơ, pờ, cu (q), rờ, sờ, tờ, u, ư, vờ, xờ, i dài (y). Chữ chỉ
+  khác dấu (a/ă/â, e/ê, o/ô/ơ, u/ư, d/đ) và b/d/đ/p/q, n/u/ư, i/l không xuất
+  hiện cùng nhau.
+- **Tiếng Anh**: 26 chữ A–Z, đọc tên chữ tiếng Anh. b/d/p/q, m/w, n/u, i/l/j
+  không xuất hiện cùng nhau.
 
-- **Bộ chữ**: 29 chữ cái tiếng Việt — a ă â b c d đ e ê g h i k l m n o ô ơ p
-  q r s t u ư v x y — cả hoa và thường (`Ă`/`ă` đều đúng).
-- **Cách đọc** (theo mầm non, xem mục 3.5): a, á (ă), ớ (â), bờ, cờ, dờ, đờ, e, ê, gờ, hờ,
-  i, ca (k), lờ, mờ, nờ, o, ô, ơ, pờ, cu (q), rờ, sờ, tờ, u, ư, vờ, xờ,
-  i dài (y).
-- **Chữ dễ nhầm không xuất hiện cùng nhau**: các chữ chỉ khác dấu (a/ă/â,
-  e/ê, o/ô/ơ, u/ư, d/đ) và b/d/đ/p/q, n/u/ư, i/l. Khi trẻ lớn hơn có thể bỏ
-  bớt quy tắc này để luyện phân biệt dấu.
-
-## 5c. Game 3 — Tìm số
+## 5b. Game 2 — Tìm số
 
 Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine), khác ở:
 
 - **Nội dung**: các số từ 1 – 10 hoặc 1 – 20. Mỗi bàn vẫn 12 ô; với 1 – 10 các
   số nhiễu có thể lặp lại. 6/9 và 16/19 không xuất hiện cùng nhau (dễ nhầm khi
   ô bị nghiêng).
-- **Giọng**: vẫn giọng Ngọc Huyền (miền Bắc) đọc cả câu — "Bạn hãy tìm số bảy." / "Số bảy." —
-  tên số đọc bằng **tiếng Việt** (một, hai… hai mươi) hoặc **tiếng Anh** phiên
-  âm kiểu Việt (oan, tu, thờ ri… tuên ti).
-- **Cài đặt trong game** (nút bánh răng trên thanh trên cùng, dành cho phụ
-  huynh): chọn "Các số" 1 – 10 / 1 – 20 và "Đọc số bằng" Tiếng Việt / Tiếng
-  Anh. Mặc định 1 – 10, tiếng Việt; lựa chọn lưu trên máy. Bấm "Chơi" để bắt
-  đầu màn mới với cài đặt đó.
-- Audio: `public/audio/numbers-vi/`, `public/audio/numbers-en/`; cấu hình ở
-  `src/features/numbers/voice.json` (danh sách 2 bộ giọng).
+- **Cài đặt**: "Các số" 1 – 10 / 1 – 20 và "Ngôn ngữ" Tiếng Việt / Tiếng Anh
+  (mục 3.5). Mặc định 1 – 10, tiếng Việt; lưu trên máy.
 
 ## 6. Ngoài phạm vi v1
 
@@ -214,8 +213,8 @@ Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine
 
 | #   | Câu hỏi           | Quyết định                                                       |
 | --- | ----------------- | ---------------------------------------------------------------- |
-| Q1  | Nguồn giọng nói   | Tạo sẵn file audio bằng TTS, giọng nữ miền Bắc (mục 3.5)         |
-| Q2  | Đọc tên chữ cái   | Tiếng Anh, do giọng tiếng Việt đọc (phiên âm "ây, bi, xi…")      |
+| Q1  | Nguồn giọng nói   | File audio tạo sẵn: Trúc Ly (miền Bắc) / af_heart (Anh, mục 3.5) |
+| Q2  | Đọc tên chữ cái   | Theo ngôn ngữ đã chọn; tiếng Anh do giọng tiếng Anh bản xứ đọc   |
 | Q3  | Hoa / thường      | Cả `A` và `a` đều tính đúng                                      |
 | Q4  | Số ô, độ khó      | 12 ô, 3–4 mục tiêu, một mức độ khó; chữ nghiêng mỗi chữ một kiểu |
 | Q5  | Thiết bị          | Boox là chính; máy khác chơi được nhờ dự phòng âm thanh + chữ    |

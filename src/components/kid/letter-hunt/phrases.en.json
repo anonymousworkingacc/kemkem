@@ -1,0 +1,137 @@
+{
+  "lang": "en",
+  "dir": "audio/phrases-en",
+  "playAgain": "Play again",
+  "prompt": [
+    {
+      "id": "prompt-1",
+      "text": "Find the"
+    },
+    {
+      "id": "prompt-2",
+      "text": "Can you find the"
+    },
+    {
+      "id": "prompt-3",
+      "text": "Let's look for the"
+    }
+  ],
+  "correct": [
+    {
+      "id": "correct-1",
+      "text": "Great job!"
+    },
+    {
+      "id": "correct-2",
+      "text": "That's right!"
+    },
+    {
+      "id": "correct-3",
+      "text": "Correct!"
+    },
+    {
+      "id": "correct-4",
+      "text": "Well done!"
+    },
+    {
+      "id": "correct-5",
+      "text": "Awesome!"
+    },
+    {
+      "id": "correct-6",
+      "text": "You got it!"
+    },
+    {
+      "id": "correct-7",
+      "text": "Super!"
+    },
+    {
+      "id": "correct-8",
+      "text": "Fantastic!"
+    },
+    {
+      "id": "correct-9",
+      "text": "Nice work!"
+    },
+    {
+      "id": "correct-10",
+      "text": "Good eyes!"
+    },
+    {
+      "id": "correct-11",
+      "text": "Excellent!"
+    },
+    {
+      "id": "correct-12",
+      "text": "You're so smart!"
+    }
+  ],
+  "wrong": [
+    {
+      "id": "wrong-1",
+      "text": "Not quite, try again!"
+    },
+    {
+      "id": "wrong-2",
+      "text": "Almost! Keep going!"
+    },
+    {
+      "id": "wrong-3",
+      "text": "That's okay, let's keep looking!"
+    },
+    {
+      "id": "wrong-4",
+      "text": "Oops, that's a different one. Try again!"
+    },
+    {
+      "id": "wrong-5",
+      "text": "You can do it!"
+    },
+    {
+      "id": "wrong-6",
+      "text": "Look carefully!"
+    },
+    {
+      "id": "wrong-7",
+      "text": "Not that one, try another!"
+    },
+    {
+      "id": "wrong-8",
+      "text": "So close! You're doing great!"
+    }
+  ],
+  "complete": [
+    {
+      "id": "complete-1",
+      "text": "Hooray! You found them all!"
+    },
+    {
+      "id": "complete-2",
+      "text": "Amazing! You're so clever!"
+    },
+    {
+      "id": "complete-3",
+      "text": "Excellent! Let's play again!"
+    },
+    {
+      "id": "complete-4",
+      "text": "You're a super explorer!"
+    },
+    {
+      "id": "complete-5",
+      "text": "Wonderful! Give yourself a big clap!"
+    },
+    {
+      "id": "complete-6",
+      "text": "Perfect! You found every one!"
+    },
+    {
+      "id": "complete-7",
+      "text": "You're the best! Hooray!"
+    },
+    {
+      "id": "complete-8",
+      "text": "Wow, that was fast! Great job!"
+    }
+  ]
+}

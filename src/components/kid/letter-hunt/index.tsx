@@ -8,64 +8,76 @@ import { pick, type GameProps } from "@/lib/game"
 import { play, preload, stop, type Clip } from "@/lib/sound"
 import { cn } from "@/lib/utils"
 import { buildBoard, drawTarget, type Cell } from "./logic"
-import phrases from "./phrases.json"
+import phrasesEn from "./phrases.en.json"
+import phrasesVi from "./phrases.vi.json"
 import "./letter-hunt.css"
 
 /** One game's letters, as stored in `src/features/<game>/voice.json`. */
 export type Alphabet = {
+  /**
+   * Language of everything the game says and shows during play: the prompt,
+   * the symbol names and the praise/encouragement lines.
+   */
+  lang: "vi" | "en"
   /**
    * Folder under /public with this game's clips (scripts/gen-voice.py):
    * `prompt-<n>-<id>.mp3` ("Bạn hãy tìm chữ bờ") and `letter-<id>.mp3`
    * ("Chữ bờ").
    */
   dir: string
-  /** What the symbols are called: "chữ" (letters) or "số" (numbers). */
+  /** What the symbols are called: "chữ"/"số" or "letter"/"number". */
   noun: string
-  /** Lower-case letters; `say` is how the Vietnamese voice names the letter. */
+  /** Lower-case letters; `say` is how the voice names the letter. */
   letters: { id: string; char: string; say: string }[]
   /** Letters easily mistaken for the key, kept off its board (both cases). */
   lookalikes: Record<string, string[]>
 }
 
 type Phrase = { id: string; text: string }
+type PhrasePack = typeof phrasesVi
 
-const vi = (p: Phrase): Clip => ({
-  src: `/${phrases.dir}/${p.id}.mp3`,
-  text: p.text,
-  lang: "vi-VN",
-})
-
-// Prompt and letter clips are fetched when played; only the shared reactions
-// are preloaded so the first tap answers without delay.
-const REACTION_CLIPS = [phrases.correct, phrases.wrong, phrases.complete]
-  .flat()
-  .map((p) => vi(p).src)
+const PACKS: Record<Alphabet["lang"], PhrasePack> = {
+  vi: phrasesVi,
+  en: phrasesEn,
+}
+const SPEECH_LANG = { vi: "vi-VN", en: "en-US" } as const
 
 function setup(alphabet: Alphabet) {
+  const phrases = PACKS[alphabet.lang]
+  const lang = SPEECH_LANG[alphabet.lang]
   const byChar = new Map(alphabet.letters.map((l) => [l.char, l]))
   const Noun = alphabet.noun[0].toUpperCase() + alphabet.noun.slice(1)
-  const clip = (file: string, text: string): Clip => ({
-    src: `/${alphabet.dir}/${file}.mp3`,
+  const clip = (dir: string, file: string, text: string): Clip => ({
+    src: `/${dir}/${file}.mp3`,
     text,
-    lang: "vi-VN",
+    lang,
   })
+  const phraseClip = (p: Phrase) => clip(phrases.dir, p.id, p.text)
   const promptClip = (prompt: Phrase, char: string) => {
     const letter = byChar.get(char)!
     return clip(
+      alphabet.dir,
       `${prompt.id}-${letter.id}`,
       `${prompt.text} ${alphabet.noun} ${letter.say}`
     )
   }
-  /** "Chữ bờ" / "Số bảy", said for the tile just tapped (either case). */
+  /** "Chữ bờ" / "Letter B", said for the tile just tapped (either case). */
   const letterClip = (glyph: string) => {
     const letter = byChar.get(glyph.toLowerCase())!
-    return clip(`letter-${letter.id}`, `${Noun} ${letter.say}`)
+    return clip(alphabet.dir, `letter-${letter.id}`, `${Noun} ${letter.say}`)
   }
   return {
+    phrases,
     letters: alphabet.letters.map((l) => l.char),
     Noun,
+    phraseClip,
     promptClip,
     letterClip,
+    // Prompt and letter clips are fetched when played; only the reactions
+    // are preloaded so the first tap answers without delay.
+    reactionClips: [phrases.correct, phrases.wrong, phrases.complete]
+      .flat()
+      .map((p) => phraseClip(p).src),
   }
 }
 
@@ -100,7 +112,7 @@ export function LetterHunt({
   onSettings?: () => void
 }) {
   const [game] = useState(() => setup(alphabet))
-  const { promptClip, letterClip, Noun } = game
+  const { phrases, phraseClip, promptClip, letterClip, Noun } = game
   const promptText = (round: Round) =>
     `${round.prompt.text} ${alphabet.noun} ${round.target.toUpperCase()}`
   const newRound = (bag: string[], last: string | null): Round => {
@@ -122,9 +134,9 @@ export function LetterHunt({
   } | null>(null)
 
   useEffect(() => {
-    preload(REACTION_CLIPS)
+    preload(game.reactionClips)
     return stop
-  }, [])
+  }, [game])
 
   // Ask for the letter at the start of every round (targets never repeat
   // back to back, so this runs once per round, not on every tap).
@@ -142,7 +154,7 @@ export function LetterHunt({
   const tap = (cell: Cell) => {
     if (cell.found) return
     const named = letterClip(cell.char)
-    const say = (phrase: Phrase) => play(named, vi(phrase))
+    const say = (phrase: Phrase) => play(named, phraseClip(phrase))
     const show = (kind: Feedback["kind"], phrase: Phrase) =>
       setFeedback({ kind, text: `${Noun} ${cell.char}. ${phrase.text}` })
     if (!cell.target) {
@@ -194,7 +206,7 @@ export function LetterHunt({
           className="flex h-[clamp(4rem,14vmin,7rem)] items-center gap-[2vmin] rounded-full border-[4px] border-ink bg-accent px-[6vmin] text-[clamp(1.5rem,6vmin,3rem)] font-bold text-accent-ink active:bg-ink"
         >
           <PlayIcon className="size-[1.2em] fill-current" strokeWidth={2.5} />
-          Chơi tiếp
+          {phrases.playAgain}
         </button>
       </div>
     )
