@@ -1,0 +1,316 @@
+[
+  {
+    "lang": "vi",
+    "dir": "audio/vehicles-vi",
+    "noun": "",
+    "letters": [
+      {
+        "id": "taxi",
+        "char": "taxi",
+        "say": "xe taxi"
+      },
+      {
+        "id": "police",
+        "char": "police",
+        "say": "xe cảnh sát"
+      },
+      {
+        "id": "race",
+        "char": "race",
+        "say": "xe đua"
+      },
+      {
+        "id": "offroad",
+        "char": "offroad",
+        "say": "xe địa hình"
+      },
+      {
+        "id": "convertible",
+        "char": "convertible",
+        "say": "xe mui trần"
+      },
+      {
+        "id": "pickup",
+        "char": "pickup",
+        "say": "xe bán tải"
+      },
+      {
+        "id": "ambulance",
+        "char": "ambulance",
+        "say": "xe cứu thương"
+      },
+      {
+        "id": "icecream",
+        "char": "icecream",
+        "say": "xe bán kem"
+      },
+      {
+        "id": "firetruck",
+        "char": "firetruck",
+        "say": "xe cứu hỏa"
+      },
+      {
+        "id": "truck",
+        "char": "truck",
+        "say": "xe tải"
+      },
+      {
+        "id": "dump",
+        "char": "dump",
+        "say": "xe ben"
+      },
+      {
+        "id": "tanker",
+        "char": "tanker",
+        "say": "xe bồn"
+      },
+      {
+        "id": "crane",
+        "char": "crane",
+        "say": "xe cẩu"
+      },
+      {
+        "id": "mixer",
+        "char": "mixer",
+        "say": "xe trộn bê tông"
+      },
+      {
+        "id": "excavator",
+        "char": "excavator",
+        "say": "máy xúc"
+      },
+      {
+        "id": "tractor",
+        "char": "tractor",
+        "say": "máy cày"
+      },
+      {
+        "id": "bus",
+        "char": "bus",
+        "say": "xe buýt"
+      },
+      {
+        "id": "doubledecker",
+        "char": "doubledecker",
+        "say": "xe buýt hai tầng"
+      },
+      {
+        "id": "bicycle",
+        "char": "bicycle",
+        "say": "xe đạp"
+      },
+      {
+        "id": "motorbike",
+        "char": "motorbike",
+        "say": "xe máy"
+      },
+      {
+        "id": "cyclo",
+        "char": "cyclo",
+        "say": "xích lô"
+      },
+      {
+        "id": "scooter",
+        "char": "scooter",
+        "say": "xe trượt"
+      },
+      {
+        "id": "train",
+        "char": "train",
+        "say": "tàu hỏa"
+      },
+      {
+        "id": "airplane",
+        "char": "airplane",
+        "say": "máy bay"
+      },
+      {
+        "id": "helicopter",
+        "char": "helicopter",
+        "say": "máy bay trực thăng"
+      },
+      {
+        "id": "balloon",
+        "char": "balloon",
+        "say": "khinh khí cầu"
+      },
+      {
+        "id": "rocket",
+        "char": "rocket",
+        "say": "tên lửa"
+      },
+      {
+        "id": "ship",
+        "char": "ship",
+        "say": "tàu thủy"
+      },
+      {
+        "id": "sailboat",
+        "char": "sailboat",
+        "say": "thuyền buồm"
+      },
+      {
+        "id": "submarine",
+        "char": "submarine",
+        "say": "tàu ngầm"
+      }
+    ]
+  },
+  {
+    "lang": "en",
+    "dir": "audio/vehicles-en",
+    "noun": "",
+    "letters": [
+      {
+        "id": "taxi",
+        "char": "taxi",
+        "say": "taxi"
+      },
+      {
+        "id": "police",
+        "char": "police",
+        "say": "police car"
+      },
+      {
+        "id": "race",
+        "char": "race",
+        "say": "race car"
+      },
+      {
+        "id": "offroad",
+        "char": "offroad",
+        "say": "jeep"
+      },
+      {
+        "id": "convertible",
+        "char": "convertible",
+        "say": "convertible"
+      },
+      {
+        "id": "pickup",
+        "char": "pickup",
+        "say": "pickup truck"
+      },
+      {
+        "id": "ambulance",
+        "char": "ambulance",
+        "say": "ambulance"
+      },
+      {
+        "id": "icecream",
+        "char": "icecream",
+        "say": "ice cream truck"
+      },
+      {
+        "id": "firetruck",
+        "char": "firetruck",
+        "say": "fire truck"
+      },
+      {
+        "id": "truck",
+        "char": "truck",
+        "say": "truck"
+      },
+      {
+        "id": "dump",
+        "char": "dump",
+        "say": "dump truck"
+      },
+      {
+        "id": "tanker",
+        "char": "tanker",
+        "say": "tanker truck"
+      },
+      {
+        "id": "crane",
+        "char": "crane",
+        "say": "crane truck"
+      },
+      {
+        "id": "mixer",
+        "char": "mixer",
+        "say": "cement mixer"
+      },
+      {
+        "id": "excavator",
+        "char": "excavator",
+        "say": "excavator"
+      },
+      {
+        "id": "tractor",
+        "char": "tractor",
+        "say": "tractor"
+      },
+      {
+        "id": "bus",
+        "char": "bus",
+        "say": "bus"
+      },
+      {
+        "id": "doubledecker",
+        "char": "doubledecker",
+        "say": "double-decker bus"
+      },
+      {
+        "id": "bicycle",
+        "char": "bicycle",
+        "say": "bicycle"
+      },
+      {
+        "id": "motorbike",
+        "char": "motorbike",
+        "say": "motorbike"
+      },
+      {
+        "id": "cyclo",
+        "char": "cyclo",
+        "say": "cyclo"
+      },
+      {
+        "id": "scooter",
+        "char": "scooter",
+        "say": "scooter"
+      },
+      {
+        "id": "train",
+        "char": "train",
+        "say": "train"
+      },
+      {
+        "id": "airplane",
+        "char": "airplane",
+        "say": "airplane"
+      },
+      {
+        "id": "helicopter",
+        "char": "helicopter",
+        "say": "helicopter"
+      },
+      {
+        "id": "balloon",
+        "char": "balloon",
+        "say": "hot air balloon"
+      },
+      {
+        "id": "rocket",
+        "char": "rocket",
+        "say": "rocket"
+      },
+      {
+        "id": "ship",
+        "char": "ship",
+        "say": "boat"
+      },
+      {
+        "id": "sailboat",
+        "char": "sailboat",
+        "say": "sailboat"
+      },
+      {
+        "id": "submarine",
+        "char": "submarine",
+        "say": "submarine"
+      }
+    ]
+  }
+]

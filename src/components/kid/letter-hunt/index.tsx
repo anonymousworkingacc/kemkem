@@ -1,5 +1,11 @@
-import { useEffect, useRef, useState } from "react"
-import { HouseIcon, PlayIcon, SettingsIcon, Volume2Icon } from "lucide-react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+import {
+  CheckIcon,
+  HouseIcon,
+  PlayIcon,
+  SettingsIcon,
+  Volume2Icon,
+} from "lucide-react"
 
 import { CELEBRATIONS } from "@/components/kid/celebration-art"
 import { FeedbackBar, type Feedback } from "@/components/kid/feedback"
@@ -25,10 +31,18 @@ export type Alphabet = {
    * ("Chữ bờ").
    */
   dir: string
-  /** What the symbols are called: "chữ"/"số" or "letter"/"number". */
+  /**
+   * What the symbols are called: "chữ"/"số" or "letter"/"number". Empty for
+   * picture games, where the name says it all ("xe cứu thương").
+   */
   noun: string
   /** Lower-case letters; `say` is how the voice names the letter. */
   letters: { id: string; char: string; say: string }[]
+  /**
+   * Picture games: drawings keyed by `char`, shown instead of the glyph.
+   * Pictures have no upper/lower case and are named by `say` on screen.
+   */
+  pictures?: Record<string, () => ReactNode>
   /** Letters easily mistaken for the key, kept off its board (both cases). */
   lookalikes: Record<string, string[]>
 }
@@ -46,7 +60,15 @@ function setup(alphabet: Alphabet) {
   const phrases = PACKS[alphabet.lang]
   const lang = SPEECH_LANG[alphabet.lang]
   const byChar = new Map(alphabet.letters.map((l) => [l.char, l]))
-  const Noun = alphabet.noun[0].toUpperCase() + alphabet.noun.slice(1)
+  const capitalize = (s: string) => s[0].toUpperCase() + s.slice(1)
+  const join = (...parts: string[]) => parts.filter(Boolean).join(" ")
+  const pictures = alphabet.pictures
+  /** "chữ B" / "xe cứu thương", as written in the prompt. */
+  const nameOf = (char: string) =>
+    pictures ? byChar.get(char)!.say : join(alphabet.noun, char.toUpperCase())
+  /** "Chữ b." / "Xe cứu thương.", as written after a tap. */
+  const tappedName = (glyph: string) =>
+    capitalize(pictures ? byChar.get(glyph)!.say : join(alphabet.noun, glyph))
   const clip = (dir: string, file: string, text: string): Clip => ({
     src: `/${dir}/${file}.mp3`,
     text,
@@ -58,18 +80,24 @@ function setup(alphabet: Alphabet) {
     return clip(
       alphabet.dir,
       `${prompt.id}-${letter.id}`,
-      `${prompt.text} ${alphabet.noun} ${letter.say}`
+      join(prompt.text, alphabet.noun, letter.say)
     )
   }
   /** "Chữ bờ" / "Letter B", said for the tile just tapped (either case). */
   const letterClip = (glyph: string) => {
     const letter = byChar.get(glyph.toLowerCase())!
-    return clip(alphabet.dir, `letter-${letter.id}`, `${Noun} ${letter.say}`)
+    return clip(
+      alphabet.dir,
+      `letter-${letter.id}`,
+      capitalize(join(alphabet.noun, letter.say))
+    )
   }
   return {
     phrases,
     letters: alphabet.letters.map((l) => l.char),
-    Noun,
+    pictures,
+    nameOf,
+    tappedName,
     phraseClip,
     promptClip,
     letterClip,
@@ -93,6 +121,18 @@ const TILE_BG = [
   "bg-tile-6",
 ]
 
+/** Draws a picture by id; a component so React keeps one per tile. */
+function Picture({
+  pictures,
+  id,
+}: {
+  pictures: Record<string, () => ReactNode>
+  id: string
+}) {
+  const Draw = pictures[id]
+  return <Draw />
+}
+
 type Round = {
   target: string
   bag: string[]
@@ -115,15 +155,20 @@ export function LetterHunt({
   onSettings?: () => void
 }) {
   const [game] = useState(() => setup(alphabet))
-  const { phrases, phraseClip, promptClip, letterClip, Noun } = game
+  const { phrases, phraseClip, promptClip, letterClip, pictures } = game
   const promptText = (round: Round) =>
-    `${round.prompt.text} ${alphabet.noun} ${round.target.toUpperCase()}`
+    `${round.prompt.text} ${game.nameOf(round.target)}`
   const newRound = (bag: string[], last: string | null): Round => {
     const next = drawTarget(game.letters, bag, last)
     return {
       ...next,
       prompt: pick(phrases.prompt),
-      cells: buildBoard(next.target, game.letters, alphabet.lookalikes),
+      cells: buildBoard(
+        next.target,
+        game.letters,
+        alphabet.lookalikes,
+        !pictures
+      ),
     }
   }
   const [round, setRound] = useState(() => newRound([], null))
@@ -167,7 +212,10 @@ export function LetterHunt({
     const named = letterClip(cell.char)
     const say = (phrase: Phrase) => play(named, phraseClip(phrase))
     const show = (kind: Feedback["kind"], phrase: Phrase) =>
-      setFeedback({ kind, text: `${Noun} ${cell.char}. ${phrase.text}` })
+      setFeedback({
+        kind,
+        text: `${game.tappedName(cell.char)}. ${phrase.text}`,
+      })
     if (repeat) {
       // Same letter while its sentence is still playing: let it finish.
       if (!cell.target) return
@@ -250,7 +298,7 @@ export function LetterHunt({
       </header>
 
       <div
-        aria-label={`Các ${alphabet.noun} cần tìm`}
+        aria-label={`Các ${alphabet.noun || "hình"} cần tìm`}
         className="flex h-[clamp(2.5rem,7vmin,4rem)] shrink-0 justify-center gap-[2vmin]"
       >
         {targets.map((c) => (
@@ -261,7 +309,16 @@ export function LetterHunt({
               c.found ? "bg-ink text-paper" : "border-dashed bg-paper"
             )}
           >
-            {c.char}
+            {!pictures ? (
+              c.char
+            ) : c.found ? (
+              // Drawings are ink-outlined: a found one turns into a ✓.
+              <CheckIcon className="size-[70%]" strokeWidth={4} />
+            ) : (
+              <span className="size-[90%]">
+                <Picture pictures={pictures} id={c.char} />
+              </span>
+            )}
           </span>
         ))}
       </div>
@@ -275,18 +332,27 @@ export function LetterHunt({
               key={cell.id}
               type="button"
               onClick={() => tap(cell)}
-              aria-label={cell.char}
+              aria-label={pictures ? game.nameOf(cell.char) : cell.char}
               className={cn(
                 "letter-tile flex min-h-0 items-center justify-center rounded-2xl border-[3px] border-ink text-ink",
                 TILE_BG[cell.tone]
               )}
             >
-              <span
-                className="letter-glyph font-bold"
-                style={{ transform: `rotate(${cell.tilt}deg)` }}
-              >
-                {cell.char}
-              </span>
+              {pictures ? (
+                <span
+                  className="letter-picture"
+                  style={{ transform: `rotate(${cell.tilt / 2}deg)` }}
+                >
+                  <Picture pictures={pictures} id={cell.char} />
+                </span>
+              ) : (
+                <span
+                  className="letter-glyph font-bold"
+                  style={{ transform: `rotate(${cell.tilt}deg)` }}
+                >
+                  {cell.char}
+                </span>
+              )}
             </button>
           )
         )}

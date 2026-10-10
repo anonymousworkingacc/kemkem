@@ -8,3 +8,11 @@
   font-size: 66cqmin;
   line-height: 1;
 }
+
+/* Drawings fill most of the tile, square whatever the tile's shape. */
+.letter-picture {
+  width: min(22vw, 14vh); /* fallback for browsers without cq units */
+  height: min(22vw, 14vh);
+  width: 92cqmin;
+  height: 92cqmin;
+}

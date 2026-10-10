@@ -16,7 +16,7 @@ Voices (both Apache-2.0, fine for commercial use):
 Writes into public/<dir>/:
   - the phrase packs src/components/kid/letter-hunt/phrases.<lang>.json
     (correct-1.mp3, wrong-1.mp3, …)
-  - for every config in src/features/*/voice.json (one, or a list):
+  - for every config in src/features/**/voice.json (one, or a list):
       prompt-<n>-<id>.mp3  each prompt of that language's pack, read whole
                            per letter ("Bạn hãy tìm chữ bờ." / "Find the
                            letter B.")
@@ -53,7 +53,7 @@ def jobs():
         for group in ("correct", "wrong", "complete"):
             for p in pack[group]:
                 yield pack["lang"], pack["dir"], p["id"], p["text"]
-    for config_path in sorted(ROOT.glob("src/features/*/voice.json")):
+    for config_path in sorted(ROOT.glob("src/features/**/voice.json")):
         data = load(config_path)
         for config in data if isinstance(data, list) else [data]:
             yield from letter_jobs(config, packs[config["lang"]]["prompt"])
@@ -62,10 +62,12 @@ def jobs():
 def letter_jobs(config, prompts):
     lang, out_dir, noun = config["lang"], config["dir"], config["noun"]
     for letter in config["letters"]:
+        # Picture topics have no noun: "Bạn hãy tìm xe cứu thương."
+        name = " ".join(filter(None, [noun, letter["say"]]))
         for p in prompts:
-            text = f"{p['text']} {noun} {letter['say']}."
+            text = f"{p['text']} {name}."
             yield lang, out_dir, f"{p['id']}-{letter['id']}", text
-        text = f"{noun.capitalize()} {letter['say']}."
+        text = f"{name[0].upper()}{name[1:]}."
         yield lang, out_dir, f"letter-{letter['id']}", text
 
 
