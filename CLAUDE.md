@@ -32,6 +32,7 @@ src/                     React client
   components/kid/        shared kid-sized UI (icon button, ✓/✗ feedback bar, SVG art)
   components/kid/letter-hunt/  the "find the letter" game engine; games pass an alphabet + language
   components/kid/game-settings.tsx  in-game settings screen (parent-facing, Vietnamese)
+  features/objects/<topic>/  picture topics for "Tìm đồ vật": pictures.tsx (SVG) + voice.json
   lib/game.ts            game contract (meta + { onExit }), lib/sound.ts voice playback
   components/ui/         shadcn/ui components (Base UI flavour) — edit freely
   lib/api.ts             fetch helpers for /api

@@ -115,7 +115,7 @@ cái tiếng Anh.
 
 ## 4. Kiến trúc tổng thể
 
-- App là một **"game hub"**: màn hình chính là lưới các trò chơi (hiện có 2: Tìm chữ, Tìm số),
+- App là một **"game hub"**: màn hình chính là lưới các trò chơi (hiện có 3: Tìm chữ, Tìm số, Tìm đồ vật),
   chạm vào để vào trò chơi. Thay layout dạng trang danh sách hiện tại của
   template.
 - Mỗi trò chơi là một thư mục `src/features/<game>/` theo quy ước của repo.
@@ -197,6 +197,31 @@ Luật chơi, giao diện và câu thoại giống game tìm chữ (cùng engine
   ô bị nghiêng).
 - **Cài đặt**: "Các số" 1 – 10 / 1 – 20 và "Ngôn ngữ" Tiếng Việt / Tiếng Anh
   (mục 3.5). Mặc định 1 – 10, tiếng Việt; lưu trên máy.
+
+## 5c. Game 3 — Tìm đồ vật (theo chủ đề)
+
+Cùng engine với tìm chữ/số, nhưng các ô là **hình vẽ vector** thay cho chữ:
+
+- **Chủ đề** (chọn trong cài đặt): hiện có "Phương tiện giao thông"; mỗi chủ
+  đề là một thư mục `src/features/objects/<chủ đề>/` gồm `pictures.tsx` (hình
+  vẽ) và `voice.json` (tên theo từng ngôn ngữ). Thêm chủ đề = thêm thư mục và
+  một dòng trong `TOPICS`.
+- **Phương tiện giao thông** (30 loại, đa dạng trong từng nhóm):
+  - ô tô: taxi, cảnh sát, xe đua, địa hình, mui trần, bán tải, cứu thương,
+    xe bán kem;
+  - xe tải / công trình: cứu hỏa, xe tải, xe ben, xe bồn, xe cẩu, trộn bê
+    tông, máy xúc, máy cày;
+  - xe buýt, xe buýt hai tầng; xe đạp, xe máy, xích lô, xe trượt; tàu hỏa;
+  - máy bay, trực thăng, khinh khí cầu, tên lửa; tàu thủy, thuyền buồm, tàu
+    ngầm.
+- Mỗi lượt hỏi **một loại cụ thể** ("Bạn hãy tìm xe cứu thương"), không hỏi
+  theo nhóm. Nếu hỏi "ô tô" thì taxi hay xe cảnh sát cũng là ô tô, trẻ sẽ bị
+  báo sai oan. Trên bàn có 3–4 hình cần tìm và 8–9 hình khác nhau.
+- Hình vẽ cùng một phong cách: nhìn ngang, viền mực dày, tô bằng màu `art-*`
+  (theme `bw` vẫn phân biệt được bằng hình dáng). Ô nghiêng nhẹ (một nửa độ
+  nghiêng của chữ). Hàng hình cần tìm hiện hình nhỏ, tìm được thì thành ✓.
+- **Cài đặt**: "Chủ đề" và "Ngôn ngữ" (mục 3.5). Tiếng Anh gọi tàu thủy là
+  "boat", vì giọng tiếng Anh đọc riêng chữ "ship" nghe không rõ.
 
 ## 6. Ngoài phạm vi v1
 

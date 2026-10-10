@@ -4,7 +4,7 @@ export const BOARD_SIZE = 12
 
 export type Cell = {
   id: number
-  /** The glyph shown, upper or lower case. */
+  /** The glyph shown, upper or lower case (or a picture id). */
   char: string
   target: boolean
   found: boolean
@@ -31,16 +31,18 @@ export function drawTarget(
 }
 
 /**
- * `letters` are lower case (or digits, which have no case). `lookalikes` maps
+ * `letters` are lower case (or digits / picture ids, which have no case:
+ * pass `cased = false` for those). `lookalikes` maps
  * a target to symbols a 2–5 year old easily mistakes for it (b/d, o/ô, 6/9…).
  * Both cases of those are kept off the board so a "wrong" tap is fair.
  */
 export function buildBoard(
   target: string,
   letters: readonly string[],
-  lookalikes: Readonly<Record<string, readonly string[]>>
+  lookalikes: Readonly<Record<string, readonly string[]>>,
+  cased = true
 ): Cell[] {
-  const upper = target.toUpperCase()
+  const upper = cased ? target.toUpperCase() : target
   const count = 3 + Math.floor(Math.random() * 2) // 3 or 4 targets
   const targets = [upper, target]
   while (targets.length < count) {
@@ -50,10 +52,13 @@ export function buildBoard(
   const banned = new Set([target, ...(lookalikes[target] ?? [])])
   const glyphs = shuffle([
     ...new Set(
-      letters.filter((c) => !banned.has(c)).flatMap((c) => [c, c.toUpperCase()])
+      letters
+        .filter((c) => !banned.has(c))
+        .flatMap((c) => (cased ? [c, c.toUpperCase()] : [c]))
     ),
   ])
-  // Small sets (numbers 1–10) repeat distractors to fill the board.
+  // Small sets (numbers 1–10) repeat distractors to fill the board; large
+  // ones show each distractor once.
   const distractors = Array.from(
     { length: BOARD_SIZE - count },
     (_, i) => glyphs[i % glyphs.length]
