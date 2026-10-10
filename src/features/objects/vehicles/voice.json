@@ -3,6 +3,7 @@
     "lang": "vi",
     "dir": "audio/vehicles-vi",
     "noun": "",
+    "named": "Đây là {}",
     "letters": [
       {
         "id": "taxi",

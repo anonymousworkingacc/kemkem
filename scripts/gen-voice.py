@@ -67,7 +67,10 @@ def letter_jobs(config, prompts):
         for p in prompts:
             text = f"{p['text']} {name}."
             yield lang, out_dir, f"{p['id']}-{letter['id']}", text
-        text = f"{name[0].upper()}{name[1:]}."
+        # "named" (optional): a sentence around the name, e.g. "Đây là {}";
+        # VieNeu says a lone two-syllable name unclearly.
+        named = config.get("named", "{}").format(name)
+        text = f"{named[0].upper()}{named[1:]}."
         yield lang, out_dir, f"letter-{letter['id']}", text
 
 

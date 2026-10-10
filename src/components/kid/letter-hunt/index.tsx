@@ -36,6 +36,11 @@ export type Alphabet = {
    * picture games, where the name says it all ("xe cứu thương").
    */
   noun: string
+  /**
+   * Optional sentence around the tapped symbol's name, `{}` being the name:
+   * "Đây là {}" → "Đây là xe tải." (a lone short name comes out unclear).
+   */
+  named?: string
   /** Lower-case letters; `say` is how the voice names the letter. */
   letters: { id: string; char: string; say: string }[]
   /**
@@ -66,9 +71,11 @@ function setup(alphabet: Alphabet) {
   /** "chữ B" / "xe cứu thương", as written in the prompt. */
   const nameOf = (char: string) =>
     pictures ? byChar.get(char)!.say : join(alphabet.noun, char.toUpperCase())
-  /** "Chữ b." / "Xe cứu thương.", as written after a tap. */
+  /** "Chữ b." / "Đây là xe cứu thương.", as written after a tap. */
+  const named = (name: string) =>
+    capitalize((alphabet.named ?? "{}").replace("{}", name))
   const tappedName = (glyph: string) =>
-    capitalize(pictures ? byChar.get(glyph)!.say : join(alphabet.noun, glyph))
+    named(pictures ? byChar.get(glyph)!.say : join(alphabet.noun, glyph))
   const clip = (dir: string, file: string, text: string): Clip => ({
     src: `/${dir}/${file}.mp3`,
     text,
@@ -89,7 +96,7 @@ function setup(alphabet: Alphabet) {
     return clip(
       alphabet.dir,
       `letter-${letter.id}`,
-      capitalize(join(alphabet.noun, letter.say))
+      named(join(alphabet.noun, letter.say))
     )
   }
   return {
@@ -315,7 +322,7 @@ export function LetterHunt({
               // Drawings are ink-outlined: a found one turns into a ✓.
               <CheckIcon className="size-[70%]" strokeWidth={4} />
             ) : (
-              <span className="size-[90%]">
+              <span className="size-full">
                 <Picture pictures={pictures} id={c.char} />
               </span>
             )}

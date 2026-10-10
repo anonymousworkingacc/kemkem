@@ -15,7 +15,7 @@ export const meta: GameMeta = {
   title: "Tìm đồ vật",
   icon: ({ className }) => (
     <span className={className}>
-      <span className="block size-[1.2em]">
+      <span className="block size-[1.8em]">
         <VEHICLES.bus />
       </span>
     </span>
