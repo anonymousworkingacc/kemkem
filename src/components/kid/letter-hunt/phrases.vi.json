@@ -1,0 +1,137 @@
+{
+  "lang": "vi",
+  "dir": "audio/phrases-vi",
+  "playAgain": "Chơi tiếp",
+  "prompt": [
+    {
+      "id": "prompt-1",
+      "text": "Bạn hãy tìm"
+    },
+    {
+      "id": "prompt-2",
+      "text": "Bé hãy tìm giúp mình"
+    },
+    {
+      "id": "prompt-3",
+      "text": "Mình cùng đi tìm"
+    }
+  ],
+  "correct": [
+    {
+      "id": "correct-1",
+      "text": "Đúng rồi!"
+    },
+    {
+      "id": "correct-2",
+      "text": "Chính xác rồi đấy!"
+    },
+    {
+      "id": "correct-3",
+      "text": "Bé giỏi quá đi!"
+    },
+    {
+      "id": "correct-4",
+      "text": "Tuyệt vời quá!"
+    },
+    {
+      "id": "correct-5",
+      "text": "Bé giỏi lắm!"
+    },
+    {
+      "id": "correct-6",
+      "text": "Hay quá là hay!"
+    },
+    {
+      "id": "correct-7",
+      "text": "Bé siêu quá đi!"
+    },
+    {
+      "id": "correct-8",
+      "text": "Làm tốt lắm!"
+    },
+    {
+      "id": "correct-9",
+      "text": "Chuẩn rồi đấy!"
+    },
+    {
+      "id": "correct-10",
+      "text": "Đúng rồi, bé tinh mắt quá!"
+    },
+    {
+      "id": "correct-11",
+      "text": "Bé làm xuất sắc lắm!"
+    },
+    {
+      "id": "correct-12",
+      "text": "Bé tìm giỏi ghê!"
+    }
+  ],
+  "wrong": [
+    {
+      "id": "wrong-1",
+      "text": "Chưa đúng rồi, thử lại nhé!"
+    },
+    {
+      "id": "wrong-2",
+      "text": "Gần đúng rồi, cố lên nào!"
+    },
+    {
+      "id": "wrong-3",
+      "text": "Không sao đâu, mình tìm tiếp nhé!"
+    },
+    {
+      "id": "wrong-4",
+      "text": "Ồ, chưa phải rồi. Bé thử lại nha!"
+    },
+    {
+      "id": "wrong-5",
+      "text": "Cố lên, bé làm được mà!"
+    },
+    {
+      "id": "wrong-6",
+      "text": "Nhìn kỹ lại nào, bé nhé!"
+    },
+    {
+      "id": "wrong-7",
+      "text": "Chưa phải đâu, mình thử ô khác nhé!"
+    },
+    {
+      "id": "wrong-8",
+      "text": "Sai một chút thôi, bé giỏi mà!"
+    }
+  ],
+  "complete": [
+    {
+      "id": "complete-1",
+      "text": "Hoan hô! Bé đã tìm được hết rồi!"
+    },
+    {
+      "id": "complete-2",
+      "text": "Tuyệt vời! Bé thật là giỏi!"
+    },
+    {
+      "id": "complete-3",
+      "text": "Xuất sắc quá! Mình chơi tiếp nhé!"
+    },
+    {
+      "id": "complete-4",
+      "text": "Bé là nhà thám hiểm tài ba!"
+    },
+    {
+      "id": "complete-5",
+      "text": "Giỏi quá đi! Thưởng cho bé một tràng pháo tay!"
+    },
+    {
+      "id": "complete-6",
+      "text": "Hoàn hảo! Bé đã tìm thấy tất cả rồi!"
+    },
+    {
+      "id": "complete-7",
+      "text": "Bé giỏi nhất nhà luôn! Hoan hô!"
+    },
+    {
+      "id": "complete-8",
+      "text": "Wow! Bé tìm nhanh quá, siêu ghê!"
+    }
+  ]
+}

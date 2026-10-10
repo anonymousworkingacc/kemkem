@@ -1,10 +1,9 @@
 [
   {
     "id": "vi",
+    "lang": "vi",
     "dir": "audio/numbers-vi",
     "noun": "số",
-    "voice": "vi-VN-HoaiMyNeural",
-    "rate": "-5%",
     "letters": [
       {
         "id": "1",
@@ -110,55 +109,54 @@
   },
   {
     "id": "en",
+    "lang": "en",
     "dir": "audio/numbers-en",
-    "noun": "số",
-    "voice": "vi-VN-HoaiMyNeural",
-    "rate": "-5%",
+    "noun": "number",
     "letters": [
       {
         "id": "1",
         "char": "1",
-        "say": "oan"
+        "say": "one"
       },
       {
         "id": "2",
         "char": "2",
-        "say": "tu"
+        "say": "two"
       },
       {
         "id": "3",
         "char": "3",
-        "say": "thờ ri"
+        "say": "three"
       },
       {
         "id": "4",
         "char": "4",
-        "say": "pho"
+        "say": "four"
       },
       {
         "id": "5",
         "char": "5",
-        "say": "phai"
+        "say": "five"
       },
       {
         "id": "6",
         "char": "6",
-        "say": "xích"
+        "say": "six"
       },
       {
         "id": "7",
         "char": "7",
-        "say": "xe vần"
+        "say": "seven"
       },
       {
         "id": "8",
         "char": "8",
-        "say": "ết"
+        "say": "eight"
       },
       {
         "id": "9",
         "char": "9",
-        "say": "nai"
+        "say": "nine"
       },
       {
         "id": "10",
@@ -168,52 +166,52 @@
       {
         "id": "11",
         "char": "11",
-        "say": "i le vần"
+        "say": "eleven"
       },
       {
         "id": "12",
         "char": "12",
-        "say": "tu eo vơ"
+        "say": "twelve"
       },
       {
         "id": "13",
         "char": "13",
-        "say": "thơ tin"
+        "say": "thirteen"
       },
       {
         "id": "14",
         "char": "14",
-        "say": "pho tin"
+        "say": "fourteen"
       },
       {
         "id": "15",
         "char": "15",
-        "say": "phíp tin"
+        "say": "fifteen"
       },
       {
         "id": "16",
         "char": "16",
-        "say": "xích tin"
+        "say": "sixteen"
       },
       {
         "id": "17",
         "char": "17",
-        "say": "xe vần tin"
+        "say": "seventeen"
       },
       {
         "id": "18",
         "char": "18",
-        "say": "ết tin"
+        "say": "eighteen"
       },
       {
         "id": "19",
         "char": "19",
-        "say": "nai tin"
+        "say": "nineteen"
       },
       {
         "id": "20",
         "char": "20",
-        "say": "tuên ti"
+        "say": "twenty"
       }
     ]
   }

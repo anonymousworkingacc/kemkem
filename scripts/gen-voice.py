@@ -1,71 +1,124 @@
-"""Generate the games' voice clips with Microsoft Edge neural TTS.
+"""Generate the games' voice clips: Vietnamese and English.
 
-Usage:  pip install edge-tts && python3 scripts/gen-voice.py [--force]
+Usage (CPU is enough, ~1–3 s per clip):
+    python3 -m venv .venv-tts && .venv-tts/bin/pip install vieneu kokoro-onnx soundfile
+    .venv-tts/bin/python scripts/gen-voice.py [--force]
+Needs ffmpeg on PATH. If onnxruntime fails with "External data path escapes
+model directory", pin it: .venv-tts/bin/pip install onnxruntime==1.22.1
+
+Voices (both Apache-2.0, fine for commercial use):
+  vi  VieNeu-TTS v3 Turbo (https://github.com/pnnbao97/VieNeu-TTS), preset
+      "Trúc Ly": female, Northern (Hà Nội) accent.
+  en  Kokoro-82M via kokoro-onnx (https://github.com/thewh1teagle/kokoro-onnx),
+      voice "af_heart": female, American English. The model files are
+      downloaded to ~/.cache/kokoro on first use.
 
 Writes into public/<dir>/:
-  - the shared phrases in src/components/kid/letter-hunt/phrases.json
+  - the phrase packs src/components/kid/letter-hunt/phrases.<lang>.json
     (correct-1.mp3, wrong-1.mp3, …)
-  - for every src/features/*/voice.json (one config, or a list of them):
-      prompt-<n>-<id>.mp3  each prompt read whole per letter
-                           ("Bạn hãy tìm chữ bờ.")
+  - for every config in src/features/*/voice.json (one, or a list):
+      prompt-<n>-<id>.mp3  each prompt of that language's pack, read whole
+                           per letter ("Bạn hãy tìm chữ bờ." / "Find the
+                           letter B.")
       letter-<id>.mp3      the letter on its own, said when a tile is tapped
-                           ("Chữ bờ.")
+                           ("Chữ bờ." / "Letter B.")
     Whole sentences sound far more natural than a lone syllable glued on.
-Existing files are skipped unless --force is given. Set SSL_CERT_FILE when
-running behind a TLS-inspecting proxy.
+Existing files are skipped unless --force is given. The Vietnamese model
+samples differently on each run: listen to short clips and regenerate any
+that come out unclear (delete the file and run again).
 """
 
-import asyncio
 import json
-import os
-import ssl
+import subprocess
 import sys
+import tempfile
+import urllib.request
 from pathlib import Path
 
-import edge_tts.communicate as tts
-
 ROOT = Path(__file__).resolve().parent.parent
-PHRASES = ROOT / "src/components/kid/letter-hunt/phrases.json"
+PACKS = ROOT / "src/components/kid/letter-hunt"
+KOKORO_DIR = Path.home() / ".cache/kokoro"
+KOKORO_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/"
 
-if os.environ.get("SSL_CERT_FILE"):
-    tts._SSL_CTX = ssl.create_default_context(cafile=os.environ["SSL_CERT_FILE"])
 
-
-def load(path: Path) -> dict:
+def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def jobs():
-    phrases = load(PHRASES)
-    for group in ("correct", "wrong", "complete"):
-        for p in phrases[group]:
-            yield phrases["dir"], p["id"], p["text"], phrases["voice"], "-5%"
+    packs = {}
+    for path in sorted(PACKS.glob("phrases.*.json")):
+        pack = load(path)
+        packs[pack["lang"]] = pack
+        for group in ("correct", "wrong", "complete"):
+            for p in pack[group]:
+                yield pack["lang"], pack["dir"], p["id"], p["text"]
     for config_path in sorted(ROOT.glob("src/features/*/voice.json")):
         data = load(config_path)
         for config in data if isinstance(data, list) else [data]:
-            yield from letter_jobs(config, phrases["prompt"])
+            yield from letter_jobs(config, packs[config["lang"]]["prompt"])
 
 
 def letter_jobs(config, prompts):
-    voice, rate = config["voice"], config.get("rate", "+0%")
-    noun = config["noun"]  # "chữ" or "số"
+    lang, out_dir, noun = config["lang"], config["dir"], config["noun"]
     for letter in config["letters"]:
         for p in prompts:
             text = f"{p['text']} {noun} {letter['say']}."
-            yield config["dir"], f"{p['id']}-{letter['id']}", text, voice, rate
+            yield lang, out_dir, f"{p['id']}-{letter['id']}", text
         text = f"{noun.capitalize()} {letter['say']}."
-        yield config["dir"], f"letter-{letter['id']}", text, voice, rate
+        yield lang, out_dir, f"letter-{letter['id']}", text
 
 
-async def main(force: bool) -> None:
-    for out_dir, clip_id, text, voice, rate in jobs():
-        out = ROOT / "public" / out_dir / f"{clip_id}.mp3"
-        if out.exists() and not force:
-            continue
-        out.parent.mkdir(parents=True, exist_ok=True)
-        await tts.Communicate(text, voice, rate=rate).save(str(out))
-        print(f"{out.relative_to(ROOT)}  <- {text!r} ({voice})")
+def vietnamese():
+    from vieneu import Vieneu
+
+    tts = Vieneu()
+    return lambda text, wav: tts.save(tts.infer(text, voice="Trúc Ly"), str(wav))
+
+
+def english():
+    import soundfile
+    from kokoro_onnx import Kokoro
+
+    KOKORO_DIR.mkdir(parents=True, exist_ok=True)
+    for name in ("kokoro-v1.0.onnx", "voices-v1.0.bin"):
+        if not (KOKORO_DIR / name).exists():
+            urllib.request.urlretrieve(KOKORO_URL + name, KOKORO_DIR / name)
+    tts = Kokoro(str(KOKORO_DIR / "kokoro-v1.0.onnx"), str(KOKORO_DIR / "voices-v1.0.bin"))
+
+    def speak(text, wav):
+        # Slightly slower than normal speech for small children.
+        samples, rate = tts.create(text, voice="af_heart", speed=0.9, lang="en-us")
+        soundfile.write(str(wav), samples, rate)
+
+    return speak
+
+
+ENGINES = {"vi": vietnamese, "en": english}
+
+
+def main(force: bool) -> None:
+    todo = [
+        (lang, ROOT / "public" / out_dir / f"{clip_id}.mp3", text)
+        for lang, out_dir, clip_id, text in jobs()
+    ]
+    todo = [job for job in todo if force or not job[1].exists()]
+    engines = {}  # loaded lazily: each takes a while to start
+    with tempfile.TemporaryDirectory() as tmp:
+        wav = Path(tmp) / "clip.wav"
+        for lang, out, text in todo:
+            if lang not in engines:
+                engines[lang] = ENGINES[lang]()
+            out.parent.mkdir(parents=True, exist_ok=True)
+            engines[lang](text, wav)
+            # Small mono mp3s: e-readers download them on the fly.
+            subprocess.run(
+                ["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-ac", "1",
+                 "-ar", "24000", "-b:a", "48k", str(out)],
+                check=True,
+            )
+            print(f"{out.relative_to(ROOT)}  <- {text!r}", flush=True)
 
 
 if __name__ == "__main__":
-    asyncio.run(main("--force" in sys.argv))
+    main("--force" in sys.argv)

@@ -1,0 +1,293 @@
+[
+  {
+    "id": "vi",
+    "lang": "vi",
+    "dir": "audio/letters-vi",
+    "noun": "chữ",
+    "letters": [
+      {
+        "id": "a",
+        "char": "a",
+        "say": "a"
+      },
+      {
+        "id": "aw",
+        "char": "ă",
+        "say": "á"
+      },
+      {
+        "id": "aa",
+        "char": "â",
+        "say": "ớ"
+      },
+      {
+        "id": "b",
+        "char": "b",
+        "say": "bờ"
+      },
+      {
+        "id": "c",
+        "char": "c",
+        "say": "cờ"
+      },
+      {
+        "id": "d",
+        "char": "d",
+        "say": "dờ"
+      },
+      {
+        "id": "dd",
+        "char": "đ",
+        "say": "đờ"
+      },
+      {
+        "id": "e",
+        "char": "e",
+        "say": "e"
+      },
+      {
+        "id": "ee",
+        "char": "ê",
+        "say": "ê"
+      },
+      {
+        "id": "g",
+        "char": "g",
+        "say": "gờ"
+      },
+      {
+        "id": "h",
+        "char": "h",
+        "say": "hờ"
+      },
+      {
+        "id": "i",
+        "char": "i",
+        "say": "i"
+      },
+      {
+        "id": "k",
+        "char": "k",
+        "say": "ca"
+      },
+      {
+        "id": "l",
+        "char": "l",
+        "say": "lờ"
+      },
+      {
+        "id": "m",
+        "char": "m",
+        "say": "mờ"
+      },
+      {
+        "id": "n",
+        "char": "n",
+        "say": "nờ"
+      },
+      {
+        "id": "o",
+        "char": "o",
+        "say": "o"
+      },
+      {
+        "id": "oo",
+        "char": "ô",
+        "say": "ô"
+      },
+      {
+        "id": "ow",
+        "char": "ơ",
+        "say": "ơ"
+      },
+      {
+        "id": "p",
+        "char": "p",
+        "say": "pờ"
+      },
+      {
+        "id": "q",
+        "char": "q",
+        "say": "cu"
+      },
+      {
+        "id": "r",
+        "char": "r",
+        "say": "rờ"
+      },
+      {
+        "id": "s",
+        "char": "s",
+        "say": "sờ"
+      },
+      {
+        "id": "t",
+        "char": "t",
+        "say": "tờ"
+      },
+      {
+        "id": "u",
+        "char": "u",
+        "say": "u"
+      },
+      {
+        "id": "uw",
+        "char": "ư",
+        "say": "ư"
+      },
+      {
+        "id": "v",
+        "char": "v",
+        "say": "vờ"
+      },
+      {
+        "id": "x",
+        "char": "x",
+        "say": "xờ"
+      },
+      {
+        "id": "y",
+        "char": "y",
+        "say": "i dài"
+      }
+    ]
+  },
+  {
+    "id": "en",
+    "lang": "en",
+    "dir": "audio/letters-en",
+    "noun": "letter",
+    "letters": [
+      {
+        "id": "a",
+        "char": "a",
+        "say": "A"
+      },
+      {
+        "id": "b",
+        "char": "b",
+        "say": "B"
+      },
+      {
+        "id": "c",
+        "char": "c",
+        "say": "C"
+      },
+      {
+        "id": "d",
+        "char": "d",
+        "say": "D"
+      },
+      {
+        "id": "e",
+        "char": "e",
+        "say": "E"
+      },
+      {
+        "id": "f",
+        "char": "f",
+        "say": "F"
+      },
+      {
+        "id": "g",
+        "char": "g",
+        "say": "G"
+      },
+      {
+        "id": "h",
+        "char": "h",
+        "say": "H"
+      },
+      {
+        "id": "i",
+        "char": "i",
+        "say": "I"
+      },
+      {
+        "id": "j",
+        "char": "j",
+        "say": "J"
+      },
+      {
+        "id": "k",
+        "char": "k",
+        "say": "K"
+      },
+      {
+        "id": "l",
+        "char": "l",
+        "say": "L"
+      },
+      {
+        "id": "m",
+        "char": "m",
+        "say": "M"
+      },
+      {
+        "id": "n",
+        "char": "n",
+        "say": "N"
+      },
+      {
+        "id": "o",
+        "char": "o",
+        "say": "O"
+      },
+      {
+        "id": "p",
+        "char": "p",
+        "say": "P"
+      },
+      {
+        "id": "q",
+        "char": "q",
+        "say": "Q"
+      },
+      {
+        "id": "r",
+        "char": "r",
+        "say": "R"
+      },
+      {
+        "id": "s",
+        "char": "s",
+        "say": "S"
+      },
+      {
+        "id": "t",
+        "char": "t",
+        "say": "T"
+      },
+      {
+        "id": "u",
+        "char": "u",
+        "say": "U"
+      },
+      {
+        "id": "v",
+        "char": "v",
+        "say": "V"
+      },
+      {
+        "id": "w",
+        "char": "w",
+        "say": "W"
+      },
+      {
+        "id": "x",
+        "char": "x",
+        "say": "X"
+      },
+      {
+        "id": "y",
+        "char": "y",
+        "say": "Y"
+      },
+      {
+        "id": "z",
+        "char": "z",
+        "say": "Z"
+      }
+    ]
+  }
+]
